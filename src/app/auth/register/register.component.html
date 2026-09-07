@@ -1,0 +1,76 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Flight Booking System</h2>
+    <h3>Create Account</h3>
+
+    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+
+      <div class="form-input">
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          [(ngModel)]="registerData.fullName"
+          #fullName="ngModel"
+          placeholder="Enter your full name"
+          required
+        />
+        <small class="error" *ngIf="fullName.invalid && fullName.touched">
+          Full name is required.
+        </small>
+      </div>
+
+      <div class="form-input">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          [(ngModel)]="registerData.email"
+          #email="ngModel"
+          placeholder="Enter your email"
+          required
+          email
+        />
+        <small class="error" *ngIf="email.invalid && email.touched">
+          Please enter a valid email.
+        </small>
+      </div>
+
+      <div class="form-input">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="registerData.password"
+          #password="ngModel"
+          placeholder="Enter your password"
+          required
+          minlength="6"
+        />
+        <small class="error" *ngIf="password.invalid && password.touched">
+          Password must be at least 6 characters.
+        </small>
+      </div>
+
+      <div class="form-input">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="registerData.confirmPassword"
+          placeholder="Confirm your password"
+          required
+        />
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+    </form>
+
+    <p *ngIf="message" [class.success]="!isError" [class.error]="isError">{{ message }}</p>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </div>
+</div>
