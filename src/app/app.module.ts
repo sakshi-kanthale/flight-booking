@@ -7,12 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { FlightSearchComponent } from './flight/flight-search/flight-search.component';
+import { FlightDetailsComponent } from './flight/flight-details/flight-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    FlightSearchComponent,
+    FlightDetailsComponent
   ],
   imports: [
     BrowserModule,
