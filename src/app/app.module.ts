@@ -11,6 +11,9 @@ import { FlightSearchComponent } from './flight/flight-search/flight-search.comp
 import { FlightDetailsComponent } from './flight/flight-details/flight-details.component';
 import { SeatSelectionComponent } from './booking/seat-selection/seat-selection.component';
 import { BookingComponent } from './booking/models/booking/booking.component';
+import { AirlineManagementComponent } from './admin/airline-management/airline-management.component';
+import { AirportManagementComponent } from './admin/airport-management/airport-management.component';
+import { FlightManagementComponent } from './admin/flight-management/flight-management.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { BookingComponent } from './booking/models/booking/booking.component';
     FlightSearchComponent,
     FlightDetailsComponent,
     SeatSelectionComponent,
-    BookingComponent
+    BookingComponent,
+    AirlineManagementComponent,
+    AirportManagementComponent,
+    FlightManagementComponent
   ],
   imports: [
     BrowserModule,
