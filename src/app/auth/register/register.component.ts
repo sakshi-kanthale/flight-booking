@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 export class RegisterComponent {
   registerData = {
     fullName: '',
+    mobileNumber: '',
     email: '',
     password: '',
     confirmPassword: '',

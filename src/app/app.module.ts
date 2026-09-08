@@ -9,6 +9,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { FlightSearchComponent } from './flight/flight-search/flight-search.component';
 import { FlightDetailsComponent } from './flight/flight-details/flight-details.component';
+import { SeatSelectionComponent } from './booking/seat-selection/seat-selection.component';
+import { BookingComponent } from './booking/models/booking/booking.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { FlightDetailsComponent } from './flight/flight-details/flight-details.c
     LoginComponent,
     RegisterComponent,
     FlightSearchComponent,
-    FlightDetailsComponent
+    FlightDetailsComponent,
+    SeatSelectionComponent,
+    BookingComponent
   ],
   imports: [
     BrowserModule,
