@@ -1,0 +1,48 @@
+<div class="mb-wrapper">
+  <h2>My Bookings</h2>
+
+  <div *ngIf="toast" class="toast">{{ toast }}</div>
+  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+  <div *ngIf="loading" class="alert alert-info">Loading your bookings...</div>
+  <div *ngIf="!loading && bookings.length === 0 && !errorMessage" class="empty-state">
+    No bookings yet. Go book a flight! ✈️
+  </div>
+
+  <div class="booking-card" *ngFor="let b of bookings">
+    <div class="booking-header">
+      <span class="booking-id">Booking #{{ b.id }}</span>
+      <span class="status-badge"
+            [class.status-confirmed]="b.status === 'CONFIRMED'"
+            [class.status-pending]="b.status === 'PENDING'"
+            [class.status-cancelled]="b.status === 'CANCELLED'">
+        {{ b.status }}
+      </span>
+    </div>
+
+    <p *ngIf="b.departureAirport && b.arrivalAirport">
+      {{ b.departureAirport }} → {{ b.arrivalAirport }} <span *ngIf="b.departureDate">| {{ b.departureDate }}</span>
+    </p>
+
+    <div class="passenger-row" *ngFor="let p of b.passengers">
+      {{ p.passengerName }} — Seat {{ p.seatNumber || p.seatId }}
+    </div>
+
+    <p *ngIf="b.totalAmount"><strong>Total:</strong> ₹{{ b.totalAmount }}</p>
+
+    <button class="btn-cancel"
+            *ngIf="canCancel(b)"
+            [disabled]="cancellingId === b.id"
+            (click)="askCancel(b.id)">
+      {{ cancellingId === b.id ? 'Cancelling...' : 'Cancel Booking' }}
+    </button>
+
+    <!-- inline confirm dialog -->
+    <div class="confirm-box" *ngIf="confirmingId === b.id">
+      <p>Are you sure you want to cancel this booking? This can't be undone.</p>
+      <div class="confirm-actions">
+        <button class="btn-secondary" (click)="dismissConfirm()">No, keep it</button>
+        <button class="btn-danger" (click)="confirmCancel(b)">Yes, cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
