@@ -7,12 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { SeatSelectionComponent } from './booking/seat-selection/seat-selection.component';
+import { PassengerDetailsComponent } from './booking/passenger-details/passenger-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    SeatSelectionComponent,
+    PassengerDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,56 @@
+<div class="search-container">
+  <div class="search-card">
+    <h2>Search Flights</h2>
+
+    <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">
+      <div class="form-input">
+        <label for="depAirport">From</label>
+        <input
+          type="text"
+          id="depAirport"
+          name="depAirport"
+          [(ngModel)]="searchData.depAirport"
+          placeholder="Departure airport"
+          required
+        />
+      </div>
+
+      <div class="form-input">
+        <label for="arrAirport">To</label>
+        <input
+          type="text"
+          id="arrAirport"
+          name="arrAirport"
+          [(ngModel)]="searchData.arrAirport"
+          placeholder="Arrival airport"
+          required
+        />
+      </div>
+
+      <div class="form-input">
+        <label for="date">Date</label>
+        <input
+          type="date"
+          id="date"
+          name="date"
+          [(ngModel)]="searchData.date"
+          required
+        />
+      </div>
+
+      <button type="submit" [disabled]="searchForm.invalid">Search</button>
+    </form>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div class="flight-list" *ngIf="flights.length > 0">
+      <div class="flight-card" *ngFor="let flight of flights">
+        <h4>{{ flight.flightNumber }}</h4>
+        <p>{{ flight.depAirport }} → {{ flight.arrAirport }}</p>
+        <p>Departure: {{ flight.departureTime }}</p>
+        <p>Price: ₹{{ flight.pricePerSeat }}</p>
+        <button (click)="viewDetails(flight.flightId)">View Details</button>
+      </div>
+    </div>
+  </div>
+</div>
