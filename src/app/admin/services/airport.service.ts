@@ -7,7 +7,7 @@ import { Airport } from '../models/airport';
   providedIn: 'root',
 })
 export class AirportService {
-  private url = 'https://unstylish-gents-magenta.ngrok-free.dev';
+  private url = 'https://unstylish-gents-magenta.ngrok-free.dev/api';
 
   private headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true',
