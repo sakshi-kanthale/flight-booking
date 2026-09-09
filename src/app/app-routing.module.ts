@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: 'booking/passenger-details/:flightId', component: PassengerDetailsComponent },
   { path: 'booking/payment/:flightId', component: PaymentComponent },
   { path: 'booking/passenger-details', component: PassengerDetailsComponent }
+  { path: 'booking/payment/:bookingId', component: PaymentComponent }
   { path: 'booking/my-bookings', component: MyBookingsComponent },
 ];
 
