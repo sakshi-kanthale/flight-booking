@@ -23,16 +23,22 @@ export class PassengerDetailsComponent implements OnInit {
   errorMessage = '';
   loadingProfile = false;
 
+  private navState: any;
+
   constructor(
     private fb: FormBuilder,
     private bookingService: BookingService,
     private router: Router
-  ) {}
+  ) {
+    // Must read navigation state here in the constructor.
+    // By the time ngOnInit() runs, getCurrentNavigation() often returns null.
+    const nav = this.router.getCurrentNavigation();
+    this.navState = nav?.extras.state ?? null;
+  }
 
   ngOnInit(): void {
     // Data passed from seat-selection via router state, fallback to sessionStorage
-    const nav = this.router.getCurrentNavigation();
-    const state = (nav?.extras.state as any) ?? JSON.parse(sessionStorage.getItem('bookingDraft') || 'null');
+    const state = this.navState ?? JSON.parse(sessionStorage.getItem('bookingDraft') || 'null');
 
     if (!state || !state.seats?.length || !state.flightId) {
       this.errorMessage = 'No seats selected. Please go back and select seats again.';

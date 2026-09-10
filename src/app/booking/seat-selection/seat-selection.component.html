@@ -2,7 +2,7 @@
   <div *ngIf="errorMessage" class="error-banner">{{ errorMessage }}</div>
 
   <div *ngIf="flight" class="flight-summary">
-    <h3>{{ flight.flightNumber }} — {{ flight.depAirport }} → {{ flight.arrAirport }}</h3>
+    <h3>{{ flight.flightNumber }} — {{ flight.departureAirportCode }} → {{ flight.arrivalAirportCode }}</h3>
     <p>{{ flight.departureTime | date:'dd MMM y, h:mm a' }}</p>
   </div>
 

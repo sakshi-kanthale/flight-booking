@@ -58,36 +58,44 @@ export class RegisterComponent {
   }
 
   completeRegistration(): void {
-    this.errorMessage = '';
-    if (this.passengerForm.invalid) {
-      this.passengerForm.markAllAsTouched();
-      this.errorMessage = 'Please fill all passenger details correctly.';
-      return;
-    }
-
-    const payload = new RegisterRequest();
-    Object.assign(payload, this.accountForm.value, this.passengerForm.value);
-    payload.age = Number(this.passengerForm.value.age);
-    payload.passportNumber = this.passengerForm.value.passportNumber.trim().toUpperCase();
-
-    this.submitting = true;
-    this.authService.register(payload).subscribe({
-      next: () => {
-        this.submitting = false;
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        this.submitting = false;
-        if (err.status === 409) {
-          this.errorMessage = 'An account with this email already exists.';
-        } else if (err.status === 400) {
-          this.errorMessage = 'Some details are invalid. Please check and try again.';
-        } else if (err.status === 0) {
-          this.errorMessage = 'Cannot reach server. Check your connection.';
-        } else {
-          this.errorMessage = 'Registration failed. Please try again.';
-        }
-      }
-    });
+  this.errorMessage = '';
+  if (this.passengerForm.invalid) {
+    this.passengerForm.markAllAsTouched();
+    this.errorMessage = 'Please fill all passenger details correctly.';
+    return;
   }
+
+  const payload = {
+    fullName: this.accountForm.value.fullName,
+    mobileNumber: this.accountForm.value.mobileNumber,
+    email: this.accountForm.value.email,
+    password: this.accountForm.value.password,
+    passengerProfile: {
+      passengerName: this.passengerForm.value.passengerName,
+      passengerAge: Number(this.passengerForm.value.age),
+      passengerGender: this.passengerForm.value.gender,
+      passportNumber: this.passengerForm.value.passportNumber.trim().toUpperCase(),
+    },
+  };
+
+  this.submitting = true;
+  this.authService.register(payload).subscribe({
+    next: () => {
+      this.submitting = false;
+      this.router.navigate(['/login']);
+    },
+    error: (err) => {
+      this.submitting = false;
+      if (err.status === 409) {
+        this.errorMessage = 'An account with this email already exists.';
+      } else if (err.status === 400) {
+        this.errorMessage = 'Some details are invalid. Please check and try again.';
+      } else if (err.status === 0) {
+        this.errorMessage = 'Cannot reach server. Check your connection.';
+      } else {
+        this.errorMessage = 'Registration failed. Please try again.';
+      }
+    }
+  });
+}
 }

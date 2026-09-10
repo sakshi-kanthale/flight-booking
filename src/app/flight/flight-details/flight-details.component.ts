@@ -9,6 +9,7 @@ import { Flight } from '../models/flight';
   styleUrls: ['./flight-details.component.css'],
 })
 export class FlightDetailsComponent implements OnInit {
+
   flight: Flight | undefined;
   errorMessage = '';
 
@@ -19,23 +20,55 @@ export class FlightDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const flightId = Number(this.route.snapshot.paramMap.get('id'));
+
+    const flightId = Number(
+      this.route.snapshot.paramMap.get('id')
+    );
+
+    if (!flightId) {
+      this.errorMessage = 'Invalid flight ID.';
+      return;
+    }
+
+    console.log('Loading flight details for ID:', flightId);
 
     this.flightService.getFlightById(flightId).subscribe({
-      next: (res) => { this.flight = res; },
-      error: () => { this.errorMessage = 'Could not load flight details.'; },
+
+      next: (res: Flight) => {
+        console.log('Flight details response:', res);
+        this.flight = res;
+      },
+
+      error: (error) => {
+        console.error('Could not load flight details:', error);
+        this.errorMessage = 'Could not load flight details.';
+      }
+
     });
   }
 
   bookNow(): void {
-    if (!this.flight) return;
+
+    if (!this.flight) {
+      console.error('No flight selected.');
+      return;
+    }
+
+    console.log('Book Now clicked');
+    console.log('Flight ID:', this.flight.flightId);
 
     const userId = localStorage.getItem('userId');
+
     if (!userId) {
+      console.log('User is not logged in. Redirecting to login.');
+
       this.router.navigate(['/login']);
       return;
     }
 
-    this.router.navigate(['/booking/seat-selection', this.flight.flightId]);
+    this.router.navigate([
+      '/booking/seat-selection',
+      this.flight.flightId
+    ]);
   }
 }

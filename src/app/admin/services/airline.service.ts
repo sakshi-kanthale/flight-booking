@@ -7,7 +7,7 @@ import { Airline } from '../models/airline';
   providedIn: 'root',
 })
 export class AirlineService {
-  private url = 'https://unstylish-gents-magenta.ngrok-free.dev';
+  private url = 'https://unstylish-gents-magenta.ngrok-free.dev/api';
 
   private headers = new HttpHeaders({
     'ngrok-skip-browser-warning': 'true',

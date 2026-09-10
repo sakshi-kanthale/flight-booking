@@ -48,7 +48,7 @@
     <div class="flight-card" *ngFor="let flight of flights">
       <div class="flight-info">
         <strong>{{ flight.airlineName }} ({{ flight.airlineCode }}) — {{ flight.flightNumber }}</strong>
-        <p>{{ flight.depAirport }} → {{ flight.arrAirport }}</p>
+        <p>{{ flight.departureAirportCode }} → {{ flight.arrivalAirportCode }}</p>
         <p>{{ flight.departureTime | date:'dd MMM y, h:mm a' }} — {{ flight.arrivalTime | date:'dd MMM y, h:mm a' }}</p>
         <p class="price">₹{{ flight.pricePerSeat }} / seat</p>
       </div>

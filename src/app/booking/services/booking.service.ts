@@ -7,8 +7,8 @@ import { PassengerProfile, SelectedSeat as Seat } from '../models/seat';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
-  private bookingUrl = `${environment.apiUrl}/api/bookings`;
-  private passengerUrl = `${environment.apiUrl}/api/passenger`;
+  private bookingUrl = `${environment.apiUrl}/bookings`;
+  private passengerUrl = `${environment.apiUrl}/passenger`;
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class BookingService {
   }
 
   getSeatsByFlight(flightId: number): Observable<Seat[]> {
-    return this.http.get<Seat[]>(`${environment.apiUrl}/api/flights/${flightId}/seats`);
+    return this.http.get<Seat[]>(`${environment.apiUrl}/flights/${flightId}/seats`);
   }
 
   getBookingById(bookingId: number): Observable<Booking> {

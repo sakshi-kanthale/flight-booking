@@ -7,7 +7,7 @@
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="submit()">
     <div formArrayName="passengers">
       <div class="passenger-card" *ngFor="let p of passengers.controls; let i = index" [formGroupName]="i">
-        <h3>Passenger {{ i + 1 }} — Seat {{ seats[i]?.seatNumber }}</h3>
+        <h3>Passenger {{ i + 1 }} — Seat {{ seats[i].seatNumber }}</h3>
 
         <label class="myself-toggle" *ngIf="i === 0">
           <input type="checkbox" [checked]="p.get('isMyself')?.value" (change)="onMyselfToggle(i, $any($event.target).checked)" />
