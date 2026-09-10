@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { BookingService } from '../services/booking.service';
+import { PaymentService } from '../services/payment.service';
 import { Booking } from '../models/booking';
 
 @Component({
@@ -32,8 +31,8 @@ export class PaymentComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private paymentService: PaymentService
   ) {}
 
   ngOnInit(): void {
@@ -91,10 +90,7 @@ export class PaymentComponent implements OnInit {
     const willSucceed = cardNumber === this.SUCCESS_CARD;
     this.processing = true;
 
-    this.http.post<{ success: boolean }>(
-      `${environment.apiUrl}/api/payments/${this.booking.paymentId}/process`,
-      { success: willSucceed }
-    ).subscribe({
+    this.paymentService.processPayment(this.booking.paymentId, willSucceed).subscribe({
       next: (res) => {
         this.processing = false;
         if (res.success) {
@@ -117,6 +113,7 @@ export class PaymentComponent implements OnInit {
   goToMyBookings(): void {
     this.router.navigate(['/booking/my-bookings']);
   }
+
   searchFlightsAgain(): void {
     this.router.navigate(['/']);
   }

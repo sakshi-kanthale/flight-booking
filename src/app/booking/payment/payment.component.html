@@ -8,12 +8,8 @@
     <h2>🎉 Booking Confirmed!</h2>
     <div class="ticket-card">
       <p class="ticket-title">FLIGHT TICKET</p>
-      <p><strong>Booking ID:</strong> {{ ticket.id }}</p>
-      <p *ngIf="ticket.flightNumber"><strong>Flight:</strong> {{ ticket.flightNumber }}</p>
-      <p *ngIf="ticket.departureAirport && ticket.arrivalAirport">
-        <strong>Route:</strong> {{ ticket.departureAirport }} → {{ ticket.arrivalAirport }}
-      </p>
-      <p *ngIf="ticket.departureDate"><strong>Date:</strong> {{ ticket.departureDate }}</p>
+      <p><strong>Booking ID:</strong> {{ ticket.bookingId }}</p>
+      <p *ngIf="ticket.bookingDate"><strong>Booked on:</strong> {{ ticket.bookingDate }}</p>
 
       <hr />
       <p class="passengers-label">Passengers</p>
@@ -22,7 +18,7 @@
       </div>
 
       <hr />
-      <p *ngIf="ticket.totalAmount"><strong>Total Amount:</strong> ₹{{ ticket.totalAmount }}</p>
+      <p *ngIf="ticket.paymentAmount"><strong>Total Amount:</strong> ₹{{ ticket.paymentAmount }}</p>
       <p class="status-badge status-confirmed">BOOKING CONFIRMED</p>
     </div>
     <button class="btn-secondary" (click)="goToMyBookings()">View My Bookings</button>
@@ -38,7 +34,7 @@
   <!-- PAYMENT FORM -->
   <form *ngIf="!ticket && !paymentFailed && !loadingBooking && booking" [formGroup]="form" (ngSubmit)="payNow()" class="pay-form">
     <h2>Payment</h2>
-    <p class="summary" *ngIf="booking.totalAmount">Amount to pay: <strong>₹{{ booking.totalAmount }}</strong></p>
+    <p class="summary" *ngIf="booking.paymentAmount">Amount to pay: <strong>₹{{ booking.paymentAmount }}</strong></p>
 
     <div class="test-cards">
       <p>Test cards:</p>

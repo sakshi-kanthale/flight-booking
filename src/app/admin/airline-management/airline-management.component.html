@@ -36,17 +36,6 @@
           Airline name is required.
         </small>
       </div>
-
-      <div class="form-input">
-        <label for="logoPath">Logo Path (optional)</label>
-        <input
-          type="text"
-          id="logoPath"
-          name="logoPath"
-          [(ngModel)]="airlineData.logoPath"
-          placeholder="e.g. air-india.png"
-        />
-      </div>
     </div>
 
     <button type="submit" [disabled]="airlineForm.invalid">
@@ -63,7 +52,6 @@
       <tr>
         <th>Code</th>
         <th>Name</th>
-        <th>Logo</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -71,7 +59,6 @@
       <tr *ngFor="let airline of airlines">
         <td>{{ airline.airlineCode }}</td>
         <td>{{ airline.airlineName }}</td>
-        <td>{{ airline.logoPath || '-' }}</td>
         <td>
           <button (click)="editAirline(airline)">Edit</button>
           <button (click)="deleteAirline(airline.airlineId)">Delete</button>

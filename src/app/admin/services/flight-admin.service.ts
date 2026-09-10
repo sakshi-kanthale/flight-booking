@@ -16,7 +16,8 @@ export class FlightAdminService {
   constructor(private http: HttpClient) {}
 
   createFlight(data: any): Observable<FlightAdmin> {
-    return this.http.post<FlightAdmin>(`${this.url}/create`, data, { headers: this.headers });
+    const createHeaders = this.headers.set('X-User-Id', '1');
+    return this.http.post<FlightAdmin>(`${this.url}/create`, data, { headers: createHeaders });
   }
 
   getAllFlights(): Observable<FlightAdmin[]> {

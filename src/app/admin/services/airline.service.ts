@@ -16,7 +16,8 @@ export class AirlineService {
   constructor(private http: HttpClient) {}
 
   createAirline(data: any): Observable<Airline> {
-    return this.http.post<Airline>(`${this.url}/airlines/create`, data, { headers: this.headers });
+    const adminHeaders = this.headers.set('X-User-Id', '1');
+    return this.http.post<Airline>(`${this.url}/airlines/create`, data, { headers: adminHeaders });
   }
 
   getAllAirlines(): Observable<Airline[]> {
@@ -28,10 +29,12 @@ export class AirlineService {
   }
 
   updateAirline(airlineId: number, data: any): Observable<Airline> {
-    return this.http.put<Airline>(`${this.url}/airlines/${airlineId}`, data, { headers: this.headers });
+    const adminHeaders = this.headers.set('X-User-Id', '1');
+    return this.http.put<Airline>(`${this.url}/airlines/${airlineId}`, data, { headers: adminHeaders });
   }
 
   deleteAirline(airlineId: number): Observable<any> {
-    return this.http.delete<any>(`${this.url}/airlines/${airlineId}`, { headers: this.headers });
+    const adminHeaders = this.headers.set('X-User-Id', '1');
+    return this.http.delete<any>(`${this.url}/airlines/${airlineId}`, { headers: adminHeaders });
   }
 }

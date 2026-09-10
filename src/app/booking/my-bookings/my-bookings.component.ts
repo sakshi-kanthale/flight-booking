@@ -36,7 +36,7 @@ export class MyBookingsComponent implements OnInit {
     this.loading = true;
     this.bookingService.getBookingsByUser(userId).subscribe({
       next: (data) => {
-        this.bookings = data.sort((a, b) => b.id - a.id);
+        this.bookings = data.sort((a, b) => b.bookingId - a.bookingId);
         this.loading = false;
       },
       error: () => {
@@ -56,15 +56,15 @@ export class MyBookingsComponent implements OnInit {
 
   confirmCancel(booking: Booking): void {
     this.confirmingId = null;
-    this.cancellingId = booking.id;
+    this.cancellingId = booking.bookingId;
     this.errorMessage = '';
 
-    this.bookingService.cancelBooking(booking.id).subscribe({
+    this.bookingService.cancelBooking(booking.bookingId).subscribe({
       next: (updated) => {
         this.cancellingId = null;
-        const idx = this.bookings.findIndex(b => b.id === updated.id);
+        const idx = this.bookings.findIndex(b => b.bookingId === updated.bookingId);
         if (idx > -1) this.bookings[idx] = updated;
-        this.toast = `Booking #${updated.id} cancelled. Seats released.`;
+        this.toast = `Booking #${updated.bookingId} cancelled. Seats released.`;
         setTimeout(() => this.toast = '', 3500);
       },
       error: (err) => {

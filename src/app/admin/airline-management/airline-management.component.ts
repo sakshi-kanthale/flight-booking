@@ -14,7 +14,6 @@ export class AirlineManagementComponent implements OnInit {
   airlineData = {
     airlineCode: '',
     airlineName: '',
-    logoPath: '',
   };
 
   isEditing = false;
@@ -75,14 +74,13 @@ export class AirlineManagementComponent implements OnInit {
     this.airlineData = {
       airlineCode: airline.airlineCode,
       airlineName: airline.airlineName,
-      logoPath: airline.logoPath,
     };
   }
 
   cancelEdit(): void {
     this.isEditing = false;
     this.editingId = null;
-    this.airlineData = { airlineCode: '', airlineName: '', logoPath: '' };
+    this.airlineData = { airlineCode: '', airlineName: '' };
   }
 
   deleteAirline(airlineId: number): void {

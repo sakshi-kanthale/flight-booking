@@ -140,7 +140,7 @@ export class PassengerDetailsComponent implements OnInit {
       next: (booking) => {
         this.submitting = false;
         sessionStorage.removeItem('bookingDraft');
-        this.router.navigate(['/booking/payment', booking.id]);
+        this.router.navigate(['/booking/payment', booking.bookingId]);
       },
       error: (err) => {
         this.submitting = false;

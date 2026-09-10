@@ -16,7 +16,7 @@ export interface CreateBookingRequest {
 }
 
 export interface BookingPassenger {
-  id?: number;
+  bookingPassengerId?: number;
   seatId: number;
   seatNumber?: string;
   passengerName: string;
@@ -26,15 +26,13 @@ export interface BookingPassenger {
 }
 
 export interface Booking {
-  id: number;
+  bookingId: number;
   userId: number;
   flightId: number;
-  flightNumber?: string;
-  departureAirport?: string;
-  arrivalAirport?: string;
-  departureDate?: string;
+  seatCount: number;
+  bookingDate: string;
   status: BookingStatus;
-  totalAmount?: number;
   paymentId?: number;
+  paymentAmount?: number;
   passengers: BookingPassenger[];
 }

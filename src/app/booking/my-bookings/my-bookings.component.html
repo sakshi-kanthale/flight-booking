@@ -10,7 +10,7 @@
 
   <div class="booking-card" *ngFor="let b of bookings">
     <div class="booking-header">
-      <span class="booking-id">Booking #{{ b.id }}</span>
+      <span class="booking-id">Booking #{{ b.bookingId }}</span>
       <span class="status-badge"
             [class.status-confirmed]="b.status === 'CONFIRMED'"
             [class.status-pending]="b.status === 'PENDING'"
@@ -19,25 +19,23 @@
       </span>
     </div>
 
-    <p *ngIf="b.departureAirport && b.arrivalAirport">
-      {{ b.departureAirport }} → {{ b.arrivalAirport }} <span *ngIf="b.departureDate">| {{ b.departureDate }}</span>
-    </p>
+    <p *ngIf="b.bookingDate">Booked on: {{ b.bookingDate }}</p>
 
     <div class="passenger-row" *ngFor="let p of b.passengers">
       {{ p.passengerName }} — Seat {{ p.seatNumber || p.seatId }}
     </div>
 
-    <p *ngIf="b.totalAmount"><strong>Total:</strong> ₹{{ b.totalAmount }}</p>
+    <p *ngIf="b.paymentAmount"><strong>Total:</strong> ₹{{ b.paymentAmount }}</p>
 
     <button class="btn-cancel"
             *ngIf="canCancel(b)"
-            [disabled]="cancellingId === b.id"
-            (click)="askCancel(b.id)">
-      {{ cancellingId === b.id ? 'Cancelling...' : 'Cancel Booking' }}
+            [disabled]="cancellingId === b.bookingId"
+            (click)="askCancel(b.bookingId)">
+      {{ cancellingId === b.bookingId ? 'Cancelling...' : 'Cancel Booking' }}
     </button>
 
     <!-- inline confirm dialog -->
-    <div class="confirm-box" *ngIf="confirmingId === b.id">
+    <div class="confirm-box" *ngIf="confirmingId === b.bookingId">
       <p>Are you sure you want to cancel this booking? This can't be undone.</p>
       <div class="confirm-actions">
         <button class="btn-secondary" (click)="dismissConfirm()">No, keep it</button>
