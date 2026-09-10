@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Booking, CreateBookingRequest } from '../models/booking';
-import { PassengerProfile } from '../models/seat';
+import { PassengerProfile, SelectedSeat as Seat } from '../models/seat';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
@@ -14,6 +14,10 @@ export class BookingService {
 
   createBooking(payload: CreateBookingRequest): Observable<Booking> {
     return this.http.post<Booking>(this.bookingUrl, payload);
+  }
+
+  getSeatsByFlight(flightId: number): Observable<Seat[]> {
+    return this.http.get<Seat[]>(`${environment.apiUrl}/api/flights/${flightId}/seats`);
   }
 
   getBookingById(bookingId: number): Observable<Booking> {

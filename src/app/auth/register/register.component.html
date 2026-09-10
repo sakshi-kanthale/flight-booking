@@ -1,76 +1,102 @@
-<div class="login-container">
-  <div class="login-card">
-    <h2>Flight Booking System</h2>
-    <h3>Create Account</h3>
+<div class="reg-wrapper">
+  <div class="reg-card">
 
-    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)">
+    <div class="step-indicator">
+      <div class="step" [class.active]="step === 1" [class.done]="step > 1">1</div>
+      <div class="step-line" [class.done]="step > 1"></div>
+      <div class="step" [class.active]="step === 2">2</div>
+    </div>
 
-      <div class="form-input">
-        <label for="fullName">Full Name</label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          [(ngModel)]="registerData.fullName"
-          #fullName="ngModel"
-          placeholder="Enter your full name"
-          required
-        />
-        <small class="error" *ngIf="fullName.invalid && fullName.touched">
-          Full name is required.
+    <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+
+    <!-- STEP 1: ACCOUNT -->
+    <form *ngIf="step === 1" [formGroup]="accountForm" (ngSubmit)="goToStep2()">
+      <h2>Create Account</h2>
+      <p class="subtitle">Step 1 of 2 — Account Details</p>
+
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" formControlName="fullName" placeholder="e.g. Riya Sharma" />
+        <small class="error" *ngIf="accountForm.get('fullName')?.touched && accountForm.get('fullName')?.invalid">
+          Enter a valid full name.
         </small>
       </div>
 
-      <div class="form-input">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="registerData.email"
-          #email="ngModel"
-          placeholder="Enter your email"
-          required
-          email
-        />
-        <small class="error" *ngIf="email.invalid && email.touched">
-          Please enter a valid email.
+      <div class="field">
+        <label>Mobile Number</label>
+        <input type="text" formControlName="mobileNumber" maxlength="10" placeholder="10-digit mobile number" />
+        <small class="error" *ngIf="accountForm.get('mobileNumber')?.touched && accountForm.get('mobileNumber')?.invalid">
+          Enter a valid 10-digit mobile number.
         </small>
       </div>
 
-      <div class="form-input">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="registerData.password"
-          #password="ngModel"
-          placeholder="Enter your password"
-          required
-          minlength="6"
-        />
-        <small class="error" *ngIf="password.invalid && password.touched">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="you@example.com" />
+        <small class="error" *ngIf="accountForm.get('email')?.touched && accountForm.get('email')?.invalid">
+          Enter a valid email address.
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="Minimum 6 characters" />
+        <small class="error" *ngIf="accountForm.get('password')?.touched && accountForm.get('password')?.invalid">
           Password must be at least 6 characters.
         </small>
       </div>
 
-      <div class="form-input">
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          [(ngModel)]="registerData.confirmPassword"
-          placeholder="Confirm your password"
-          required
-        />
-      </div>
-
-      <button type="submit" [disabled]="registerForm.invalid">Register</button>
+      <button type="submit" class="btn-primary">Continue</button>
+      <p class="switch-link">Already have an account? <a routerLink="/login">Login</a></p>
     </form>
 
-    <p *ngIf="message" [class.success]="!isError" [class.error]="isError">{{ message }}</p>
-    <p>Already have an account? <a routerLink="/login">Login</a></p>
+    <!-- STEP 2: PASSENGER DETAILS -->
+    <form *ngIf="step === 2" [formGroup]="passengerForm" (ngSubmit)="completeRegistration()">
+      <h2>Passenger Details</h2>
+      <p class="subtitle">Step 2 of 2 — used to autofill your future bookings</p>
+
+      <div class="field">
+        <label>Passenger Name</label>
+        <input type="text" formControlName="passengerName" />
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Age</label>
+          <input type="number" formControlName="age" placeholder="Age" />
+          <small class="error" *ngIf="passengerForm.get('age')?.touched && passengerForm.get('age')?.invalid">
+            Enter a valid age.
+          </small>
+        </div>
+        <div class="field">
+          <label>Gender</label>
+          <select formControlName="gender">
+            <option value="" disabled>Select</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="OTHER">Other</option>
+          </select>
+          <small class="error" *ngIf="passengerForm.get('gender')?.touched && passengerForm.get('gender')?.invalid">
+            Please select a gender.
+          </small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Passport Number</label>
+        <input type="text" formControlName="passportNumber" placeholder="e.g. A1234569" />
+        <small class="error" *ngIf="passengerForm.get('passportNumber')?.touched && passengerForm.get('passportNumber')?.invalid">
+          6–12 letters/numbers, no spaces.
+        </small>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" (click)="backToStep1()">Back</button>
+        <button type="submit" class="btn-primary" [disabled]="submitting">
+          {{ submitting ? 'Creating account...' : 'Complete Registration' }}
+        </button>
+      </div>
+    </form>
+
   </div>
 </div>

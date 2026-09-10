@@ -1,0 +1,22 @@
+<div class="seat-selection-container" *ngIf="!loading; else loadingBlock">
+  <div *ngIf="errorMessage" class="error-banner">{{ errorMessage }}</div>
+
+  <div *ngIf="flight" class="flight-summary">
+    <h3>{{ flight.flightNumber }} — {{ flight.depAirport }} → {{ flight.arrAirport }}</h3>
+    <p>{{ flight.departureTime | date:'dd MMM y, h:mm a' }}</p>
+  </div>
+
+  <label for="seats">Select seat(s)</label>
+  <select id="seats" multiple size="8" (change)="onSeatChange($event)">
+    <option *ngFor="let seat of availableSeats" [value]="seat.seatId">{{ seat.seatNumber }}</option>
+  </select>
+  <p class="hint">Hold Ctrl (or Cmd) to select multiple seats.</p>
+
+  <div class="footer" *ngIf="flight">
+    <p>{{ selectedSeats.length }} seat(s) selected — ₹{{ totalPrice }}</p>
+    <button class="btn-primary" [disabled]="selectedSeats.length === 0" (click)="proceedToPassengerDetails()">
+      Continue to Passenger Details
+    </button>
+  </div>
+</div>
+<ng-template #loadingBlock><p>Loading seats...</p></ng-template>

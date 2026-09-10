@@ -1,41 +1,93 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { RegisterRequest } from '../models/register-request';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  registerData = {
-    fullName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  };
+  step = 1;
 
-  message = '';
-  isError = false;
+  accountForm: FormGroup;
+  passengerForm: FormGroup;
 
-  constructor(private authService: AuthService) {}
+  submitting = false;
+  errorMessage = '';
 
-  onRegister(form: NgForm): void {
-    if (this.registerData.password !== this.registerData.confirmPassword) {
-      this.message = 'Passwords do not match';
-      this.isError = true;
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.accountForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(60)]],
+      mobileNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    this.passengerForm = this.fb.group({
+      passengerName: ['', [Validators.required, Validators.minLength(2)]],
+      age: [null, [Validators.required, Validators.min(1), Validators.max(120)]],
+      gender: ['', Validators.required],
+      passportNumber: ['', [Validators.required, Validators.pattern(/^[A-Za-z0-9]{6,12}$/)]]
+    });
+  }
+
+  goToStep2(): void {
+    this.errorMessage = '';
+    if (this.accountForm.invalid) {
+      this.accountForm.markAllAsTouched();
+      this.errorMessage = 'Please fill all account details correctly.';
+      return;
+    }
+    // pre-fill passenger name from full name
+    this.passengerForm.patchValue({ passengerName: this.accountForm.value.fullName });
+    this.step = 2;
+  }
+
+  backToStep1(): void {
+    this.step = 1;
+  }
+
+  completeRegistration(): void {
+    this.errorMessage = '';
+    if (this.passengerForm.invalid) {
+      this.passengerForm.markAllAsTouched();
+      this.errorMessage = 'Please fill all passenger details correctly.';
       return;
     }
 
-    this.authService.register(this.registerData).subscribe({
-      next: (res) => {
-        this.message = 'Registration successful';
-        this.isError = false;
+    const payload = new RegisterRequest();
+    Object.assign(payload, this.accountForm.value, this.passengerForm.value);
+    payload.age = Number(this.passengerForm.value.age);
+    payload.passportNumber = this.passengerForm.value.passportNumber.trim().toUpperCase();
+
+    this.submitting = true;
+    this.authService.register(payload).subscribe({
+      next: () => {
+        this.submitting = false;
+        this.router.navigate(['/login']);
       },
       error: (err) => {
-        this.message = 'Registration failed, please try again';
-        this.isError = true;
-      },
+        this.submitting = false;
+        if (err.status === 409) {
+          this.errorMessage = 'An account with this email already exists.';
+        } else if (err.status === 400) {
+          this.errorMessage = 'Some details are invalid. Please check and try again.';
+        } else if (err.status === 0) {
+          this.errorMessage = 'Cannot reach server. Check your connection.';
+        } else {
+          this.errorMessage = 'Registration failed. Please try again.';
+        }
+      }
     });
   }
 }

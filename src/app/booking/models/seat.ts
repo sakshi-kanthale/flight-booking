@@ -1,11 +1,12 @@
-export interface SelectedSeat {
-  seatId: number;
-  seatNumber: string;
+export class SelectedSeat {
+  seatId!: number;
+  seatNumber!: string;
+  status?: string;
 }
 
-export interface PassengerProfile {
-  passengerName: string;
-  passengerAge: number;
-  passengerGender: string;
-  passportNumber: string;
+export class PassengerProfile {
+  passengerName!: string;
+  passengerAge!: number;
+  passengerGender!: string;
+  passportNumber!: string;
 }

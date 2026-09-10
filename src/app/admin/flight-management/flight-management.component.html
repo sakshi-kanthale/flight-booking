@@ -1,0 +1,113 @@
+<div class="admin-container">
+  <h2>Flight Management</h2>
+
+  <form #flightForm="ngForm" (ngSubmit)="onSubmit(flightForm)">
+    <div class="form-row">
+      <div class="form-input">
+        <label for="airlineId">Airline</label>
+        <select id="airlineId" name="airlineId" [(ngModel)]="flightData.airlineId" required>
+          <option [ngValue]="null" disabled>Select airline</option>
+          <option *ngFor="let a of airlines" [ngValue]="a.airlineId">
+            {{ a.airlineName }} ({{ a.airlineCode }})
+          </option>
+        </select>
+      </div>
+
+      <div class="form-input">
+        <label for="flightNumber">Flight Number</label>
+        <input type="text" id="flightNumber" name="flightNumber" [(ngModel)]="flightData.flightNumber" placeholder="e.g. AI101" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-input">
+        <label for="departureAirportCode">Departure Airport</label>
+        <select id="departureAirportCode" name="departureAirportCode" [(ngModel)]="flightData.departureAirportCode" required>
+          <option [ngValue]="''" disabled>Select departure airport</option>
+          <option *ngFor="let ap of airports" [ngValue]="ap.airportCode">
+            {{ ap.airportCode }} - {{ ap.airportName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-input">
+        <label for="arrivalAirportCode">Arrival Airport</label>
+        <select id="arrivalAirportCode" name="arrivalAirportCode" [(ngModel)]="flightData.arrivalAirportCode" required>
+          <option [ngValue]="''" disabled>Select arrival airport</option>
+          <option *ngFor="let ap of airports" [ngValue]="ap.airportCode">
+            {{ ap.airportCode }} - {{ ap.airportName }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-input">
+        <label for="departureDate">Departure Date</label>
+        <input type="date" id="departureDate" name="departureDate" [(ngModel)]="flightData.departureDate" required />
+      </div>
+      <div class="form-input">
+        <label for="departureTimeOnly">Departure Time</label>
+        <input type="time" id="departureTimeOnly" name="departureTimeOnly" [(ngModel)]="flightData.departureTimeOnly" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-input">
+        <label for="arrivalDate">Arrival Date</label>
+        <input type="date" id="arrivalDate" name="arrivalDate" [(ngModel)]="flightData.arrivalDate" required />
+      </div>
+      <div class="form-input">
+        <label for="arrivalTimeOnly">Arrival Time</label>
+        <input type="time" id="arrivalTimeOnly" name="arrivalTimeOnly" [(ngModel)]="flightData.arrivalTimeOnly" required />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-input">
+        <label for="totalSeats">Total Seats</label>
+        <input type="number" id="totalSeats" name="totalSeats" [(ngModel)]="flightData.totalSeats" min="1" required />
+      </div>
+      <div class="form-input">
+        <label for="pricePerSeat">Price Per Seat</label>
+        <input type="number" id="pricePerSeat" name="pricePerSeat" [(ngModel)]="flightData.pricePerSeat" min="1" required />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="flightForm.invalid">
+      {{ isEditing ? 'Update Flight' : 'Add Flight' }}
+    </button>
+    <button type="button" *ngIf="isEditing" (click)="cancelEdit(flightForm)">Cancel</button>
+  </form>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+  <table *ngIf="flights.length > 0">
+    <tr>
+      <th>Airline</th>
+      <th>Flight No.</th>
+      <th>Route</th>
+      <th>Departure</th>
+      <th>Arrival</th>
+      <th>Seats</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let f of flights">
+      <td>{{ f.airlineName }} ({{ f.airlineCode }})</td>
+      <td>{{ f.flightNumber }}</td>
+      <td>{{ f.departureAirportCode }} → {{ f.arrivalAirportCode }}</td>
+      <td>{{ f.departureTime }}</td>
+      <td>{{ f.arrivalTime }}</td>
+      <td>{{ f.totalSeats }}</td>
+      <td>₹{{ f.pricePerSeat }}</td>
+      <td>
+        <button class="edit-btn" (click)="editFlight(f)">Edit</button>
+        <button class="delete-btn" (click)="deleteFlight(f.flightId)">Delete</button>
+      </td>
+    </tr>
+  </table>
+
+  <p *ngIf="flights.length === 0 && !errorMessage">No flights added yet.</p>
+</div>

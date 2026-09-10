@@ -23,6 +23,7 @@ export class PaymentComponent implements OnInit {
   processing = false;
   errorMessage = '';
   ticket?: Booking; // set on success, drives the ticket UI
+  paymentFailed = false; // set on failure, hides form and shows retry message
 
   readonly SUCCESS_CARD = '4111111111111111';
   readonly FAIL_CARD = '4000000000000002';
@@ -102,7 +103,8 @@ export class PaymentComponent implements OnInit {
             error: () => { this.errorMessage = 'Payment succeeded but could not fetch ticket. Check My Bookings.'; }
           });
         } else {
-          this.errorMessage = 'Payment failed. Your seats have been released. Please try again with a different card.';
+          this.paymentFailed = true;
+          this.errorMessage = 'Payment failed. Your seats have been released. Please start a new booking.';
         }
       },
       error: () => {
@@ -114,5 +116,8 @@ export class PaymentComponent implements OnInit {
 
   goToMyBookings(): void {
     this.router.navigate(['/booking/my-bookings']);
+  }
+  searchFlightsAgain(): void {
+    this.router.navigate(['/']);
   }
 }

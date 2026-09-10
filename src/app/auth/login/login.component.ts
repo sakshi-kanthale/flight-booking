@@ -1,33 +1,62 @@
 import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginData = {
-    email: '',
-    password: '',
-  };
+  form: FormGroup;
+  submitting = false;
+  errorMessage = '';
 
-  message = '';
-  isError = false;
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
 
-  constructor(private authService: AuthService) {}
+  submit(): void {
+    this.errorMessage = '';
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.errorMessage = 'Please enter a valid email and password.';
+      return;
+    }
 
-  onLogin(form: NgForm): void {
-    this.authService.login(this.loginData).subscribe({
+    this.submitting = true;
+    this.authService.login(this.form.value).subscribe({
       next: (res) => {
-        this.message = 'Login successful';
-        this.isError = false;
+        this.submitting = false;
+        const role = (res?.role || '').toString().toUpperCase();
+
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin/dashboard']);
+        } else {
+          this.router.navigate(['/']); // user home / flight search
+        }
       },
       error: (err) => {
-        this.message = "You don't have an account yet, please Register";
-        this.isError = true;
-      },
+        this.submitting = false;
+        if (err.status === 401 || err.status === 404) {
+          this.errorMessage = 'Invalid email or password.';
+        } else if (err.status === 0) {
+          this.errorMessage = 'Cannot reach server. Check your connection.';
+        } else {
+          this.errorMessage = 'Login failed. Please try again.';
+        }
+      }
     });
   }
 }

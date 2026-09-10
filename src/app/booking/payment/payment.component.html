@@ -28,8 +28,15 @@
     <button class="btn-secondary" (click)="goToMyBookings()">View My Bookings</button>
   </div>
 
+  <!-- PAYMENT FAILED -->
+  <div class="ticket" *ngIf="paymentFailed">
+    <h2>❌ Payment Failed</h2>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-primary" (click)="searchFlightsAgain()">Search Flights Again</button>
+  </div>
+
   <!-- PAYMENT FORM -->
-  <form *ngIf="!ticket && !loadingBooking && booking" [formGroup]="form" (ngSubmit)="payNow()" class="pay-form">
+  <form *ngIf="!ticket && !paymentFailed && !loadingBooking && booking" [formGroup]="form" (ngSubmit)="payNow()" class="pay-form">
     <h2>Payment</h2>
     <p class="summary" *ngIf="booking.totalAmount">Amount to pay: <strong>₹{{ booking.totalAmount }}</strong></p>
 

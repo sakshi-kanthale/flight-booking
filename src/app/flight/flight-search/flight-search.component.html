@@ -1,56 +1,84 @@
-<div class="search-container">
-  <div class="search-card">
-    <h2>Search Flights</h2>
+<header class="topbar">
+  <div class="logo">✈ FlightBooking</div>
+  <div class="auth-links" *ngIf="!isLoggedIn">
+    <a routerLink="/login">Login</a>
+    <a routerLink="/register" class="btn-outline">Register</a>
+  </div>
+  <div class="auth-links" *ngIf="isLoggedIn">
+    <a routerLink="/booking/my-bookings">My Bookings</a>
+    <span class="username">{{ currentUserName }}</span>
+    <button class="btn-outline" (click)="logout()">Logout</button>
+  </div>
+</header>
 
-    <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)">
-      <div class="form-input">
-        <label for="depAirport">From</label>
-        <input
-          type="text"
-          id="depAirport"
-          name="depAirport"
-          [(ngModel)]="searchData.depAirport"
-          placeholder="Departure airport"
-          required
-        />
-      </div>
+<section class="hero">
+  <h1>Find your next flight</h1>
+  <p>Search, compare and book domestic flights across India</p>
 
-      <div class="form-input">
-        <label for="arrAirport">To</label>
-        <input
-          type="text"
-          id="arrAirport"
-          name="arrAirport"
-          [(ngModel)]="searchData.arrAirport"
-          placeholder="Arrival airport"
-          required
-        />
-      </div>
+  <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)" class="search-card">
+    <div class="form-row">
+      <label>From</label>
+      <select name="fromAirportCode" [(ngModel)]="searchCriteria.fromAirportCode" required>
+        <option value="" disabled selected>Departure airport</option>
+        <option *ngFor="let a of airports" [value]="a.airportCode">{{ a.airportCode }} - {{ a.airportName }}</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>To</label>
+      <select name="toAirportCode" [(ngModel)]="searchCriteria.toAirportCode" required>
+        <option value="" disabled selected>Arrival airport</option>
+        <option *ngFor="let a of airports" [value]="a.airportCode">{{ a.airportCode }} - {{ a.airportName }}</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Date</label>
+      <input type="date" name="date" [(ngModel)]="searchCriteria.date" required>
+    </div>
+    <button type="submit" class="btn-primary" [disabled]="searchForm.invalid || loading">
+      {{ loading ? 'Searching...' : 'Search Flights' }}
+    </button>
+  </form>
 
-      <div class="form-input">
-        <label for="date">Date</label>
-        <input
-          type="date"
-          id="date"
-          name="date"
-          [(ngModel)]="searchData.date"
-          required
-        />
-      </div>
+  <div *ngIf="errorMessage" class="error-banner">{{ errorMessage }}</div>
+  <div *ngIf="searched && !loading && flights.length === 0 && !errorMessage" class="no-results">
+    No flights found for this route and date.
+  </div>
 
-      <button type="submit" [disabled]="searchForm.invalid">Search</button>
-    </form>
-
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-
-    <div class="flight-list" *ngIf="flights.length > 0">
-      <div class="flight-card" *ngFor="let flight of flights">
-        <h4>{{ flight.flightNumber }}</h4>
+  <div class="results-list" *ngIf="flights.length > 0">
+    <div class="flight-card" *ngFor="let flight of flights">
+      <div class="flight-info">
+        <strong>{{ flight.airlineName }} ({{ flight.airlineCode }}) — {{ flight.flightNumber }}</strong>
         <p>{{ flight.depAirport }} → {{ flight.arrAirport }}</p>
-        <p>Departure: {{ flight.departureTime }}</p>
-        <p>Price: ₹{{ flight.pricePerSeat }}</p>
-        <button (click)="viewDetails(flight.flightId)">View Details</button>
+        <p>{{ flight.departureTime | date:'dd MMM y, h:mm a' }} — {{ flight.arrivalTime | date:'dd MMM y, h:mm a' }}</p>
+        <p class="price">₹{{ flight.pricePerSeat }} / seat</p>
       </div>
+      <button class="btn-primary" (click)="viewDetails(flight)">View Details</button>
     </div>
   </div>
-</div>
+</section>
+
+<section class="info-section">
+  <h2>Why fly with us</h2>
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>🇮🇳 Domestic Flights</h3>
+      <p>Covering major Indian cities with reliable scheduled flights.</p>
+    </div>
+    <div class="info-card">
+      <h3>📍 Popular Destinations</h3>
+      <p>Delhi, Mumbai, Bangalore, Hyderabad and more — all in one place.</p>
+    </div>
+    <div class="info-card">
+      <h3>⚡ Easy Booking</h3>
+      <p>Search, pick your seat, pay securely, get your ticket instantly.</p>
+    </div>
+  </div>
+
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step"><span>1</span>Search your route and date</div>
+    <div class="step"><span>2</span>Pick your flight and seat</div>
+    <div class="step"><span>3</span>Enter passenger details</div>
+    <div class="step"><span>4</span>Pay and get your ticket</div>
+  </div>
+</section>

@@ -1,0 +1,106 @@
+<div class="admin-container">
+  <h2>Airport Management</h2>
+
+  <form #airportForm="ngForm" (ngSubmit)="onSubmit(airportForm)">
+    <div class="form-row">
+      <div class="form-input">
+        <label for="airportCode">Airport Code</label>
+        <input
+          type="text"
+          id="airportCode"
+          name="airportCode"
+          [(ngModel)]="airportData.airportCode"
+          #airportCode="ngModel"
+          placeholder="e.g. DEL"
+          required
+          minlength="3"
+          maxlength="3"
+          [readonly]="isEditing"
+        />
+        <small class="error" *ngIf="airportCode.invalid && airportCode.touched">
+          Code must be exactly 3 characters.
+        </small>
+      </div>
+
+      <div class="form-input">
+        <label for="airportName">Airport Name</label>
+        <input
+          type="text"
+          id="airportName"
+          name="airportName"
+          [(ngModel)]="airportData.airportName"
+          #airportName="ngModel"
+          placeholder="e.g. Delhi Airport"
+          required
+        />
+        <small class="error" *ngIf="airportName.invalid && airportName.touched">
+          Airport name is required.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-input">
+        <label for="city">City</label>
+        <input
+          type="text"
+          id="city"
+          name="city"
+          [(ngModel)]="airportData.city"
+          #city="ngModel"
+          placeholder="e.g. Delhi"
+          required
+        />
+        <small class="error" *ngIf="city.invalid && city.touched">
+          City is required.
+        </small>
+      </div>
+
+      <div class="form-input">
+        <label for="country">Country</label>
+        <input
+          type="text"
+          id="country"
+          name="country"
+          [(ngModel)]="airportData.country"
+          #country="ngModel"
+          placeholder="e.g. India"
+          required
+        />
+        <small class="error" *ngIf="country.invalid && country.touched">
+          Country is required.
+        </small>
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="airportForm.invalid">
+      {{ isEditing ? 'Update Airport' : 'Add Airport' }}
+    </button>
+    <button type="button" *ngIf="isEditing" (click)="cancelEdit(airportForm)">Cancel</button>
+  </form>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+
+  <table *ngIf="airports.length > 0">
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+      <th>City</th>
+      <th>Country</th>
+      <th>Actions</th>
+    </tr>
+    <tr *ngFor="let airport of airports">
+      <td>{{ airport.airportCode }}</td>
+      <td>{{ airport.airportName }}</td>
+      <td>{{ airport.city }}</td>
+      <td>{{ airport.country }}</td>
+      <td>
+        <button class="edit-btn" (click)="editAirport(airport)">Edit</button>
+        <button class="delete-btn" (click)="deleteAirport(airport.airportCode)">Delete</button>
+      </td>
+    </tr>
+  </table>
+
+  <p *ngIf="airports.length === 0 && !errorMessage">No airports added yet.</p>
+</div>

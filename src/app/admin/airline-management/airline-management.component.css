@@ -1,0 +1,87 @@
+.admin-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.admin-container h2 {
+  font-family: Georgia, serif;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-input {
+  text-align: left;
+  margin-bottom: 15px;
+  flex: 1;
+}
+
+.form-input label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-input input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  background-color: #ccc;
+  color: #666;
+}
+
+button:enabled {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.edit-btn, .delete-btn {
+  padding: 5px 10px;
+  margin-right: 5px;
+  font-size: 13px;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
