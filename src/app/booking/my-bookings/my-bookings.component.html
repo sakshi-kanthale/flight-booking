@@ -1,4 +1,6 @@
 <div class="mb-wrapper">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
 
   <h2>My Bookings</h2>
 
@@ -96,11 +98,42 @@
 
 
     <!-- ========================= -->
+    <!-- FLIGHT ROUTE -->
+    <!-- ========================= -->
+
+    <div class="flight-route" *ngIf="flightsMap[b.flightId] as flight">
+      <div class="airport">
+        <h1>{{ flight.departureAirportCode }}</h1>
+        <p>{{ flight.departureAirportName }}</p>
+        <strong>{{ flight.departureTime | date:'hh:mm a' }}</strong>
+        <span>{{ flight.departureTime | date:'d MMM yyyy' }}</span>
+      </div>
+
+      <div class="journey">
+        <strong>{{ getDuration(flight) }}</strong>
+        <div class="line">
+          <span class="dash"></span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="#F5A623" style="transform:rotate(90deg);"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+          <span class="dash"></span>
+        </div>
+        <span>Direct Flight</span>
+      </div>
+
+      <div class="airport">
+        <h1>{{ flight.arrivalAirportCode }}</h1>
+        <p>{{ flight.arrivalAirportName }}</p>
+        <strong>{{ flight.arrivalTime | date:'hh:mm a' }}</strong>
+        <span>{{ flight.arrivalTime | date:'d MMM yyyy' }}</span>
+      </div>
+    </div>
+
+
+    <!-- ========================= -->
     <!-- BOOKING DATE -->
     <!-- ========================= -->
 
-    <p *ngIf="b.bookingDate">
-      Booked on: {{ b.bookingDate }}
+    <p *ngIf="b.bookingDate" class="booked-on">
+      Booked on: <strong>{{ b.bookingDate | date:'d MMM yyyy, h:mm a' }}</strong>
     </p>
 
 
@@ -108,14 +141,17 @@
     <!-- PASSENGERS -->
     <!-- ========================= -->
 
-    <div
-      class="passenger-row"
-      *ngFor="let p of b.passengers">
+    <div class="passengers-block" *ngIf="b.passengers?.length">
+      <p class="passengers-label">Passengers</p>
+      <div
+        class="passenger-row"
+        *ngFor="let p of b.passengers">
 
-      {{ p.passengerName }}
-      —
-      Seat {{ p.seatNumber || p.seatId }}
+        {{ p.passengerName }}
+        —
+        Seat {{ p.seatNumber || p.seatId }}
 
+      </div>
     </div>
 
 
@@ -123,7 +159,7 @@
     <!-- TOTAL AMOUNT -->
     <!-- ========================= -->
 
-    <p *ngIf="b.paymentAmount">
+    <p *ngIf="b.paymentAmount" class="total-row">
       <strong>Total:</strong>
       ₹{{ b.paymentAmount }}
     </p>
@@ -207,6 +243,7 @@
       class="booking-message">
 
       This booking has been cancelled.
+      <span *ngIf="b.paymentAmount" class="refund-note">Your amount has been refunded.</span>
 
     </p>
 

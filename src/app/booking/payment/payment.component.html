@@ -1,4 +1,6 @@
 <div class="pay-wrapper">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
 
   <!-- ========================= -->
   <!-- LOADING -->
@@ -22,7 +24,10 @@
     *ngIf="ticket"
   >
 
-    <h2>🎉 Booking Confirmed!</h2>
+    <div class="success-badge">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M4 12l6 6L20 6"/></svg>
+    </div>
+    <h2>Booking Confirmed!</h2>
 
     <div class="ticket-card">
 
@@ -93,7 +98,10 @@
     *ngIf="paymentFailed && !ticket"
   >
 
-    <h2>❌ Payment Failed</h2>
+    <div class="fail-badge">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </div>
+    <h2>Payment Failed</h2>
 
     <p>
       Your payment was unsuccessful.

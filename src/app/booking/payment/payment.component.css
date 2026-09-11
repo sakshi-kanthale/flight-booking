@@ -1,42 +1,131 @@
-.pay-wrapper { max-width: 520px; margin: 32px auto; padding: 24px; font-family: 'Segoe UI', system-ui, sans-serif; }
+:root {
+  --deepblue:#0A2E5C;
+  --midblue:#1565A8;
+  --teal:#1FB6C9;
+  --peach:#F5A623;
+  --green:#1B9C5A;
+  --red:#e05257;
+}
 
-.alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
-.alert-error { background: #fdecea; color: #b3261e; border: 1px solid #f3c1bd; }
-.alert-info { background: #e8f0fe; color: #1a4b8c; border: 1px solid #b6d0f5; }
+.pay-wrapper {
+  position: relative;
+  max-width: 520px;
+  margin: 32px auto;
+  padding: 28px 24px;
+  border-radius: 24px;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(165deg, var(--deepblue) 0%, var(--midblue) 55%, var(--teal) 100%);
+}
 
-.pay-form { background: #fff; border: 1px solid #e3e6ec; border-radius: 14px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-.summary { color: #444; margin-bottom: 12px; }
+.blob { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.35; z-index: 0; pointer-events: none; }
+.blob1 { width: 200px; height: 200px; background: #fff; top: -60px; right: -60px; }
+.blob2 { width: 170px; height: 170px; background: var(--peach); bottom: -50px; left: -50px; }
 
-.test-cards { background: #fff8e1; border: 1px dashed #e0c46c; padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; color: #6b5900; }
-.test-cards code { background: #fff; padding: 2px 6px; border-radius: 4px; }
+.alert { position: relative; z-index: 1; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-size: 14px; }
+.alert-error { background: rgba(253, 236, 234, 0.9); color: #b3261e; border: 1px solid rgba(243, 193, 189, 0.9); }
+.alert-info { background: rgba(232, 240, 254, 0.9); color: #1a4b8c; border: 1px solid rgba(182, 208, 245, 0.9); }
+
+.pay-form {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+}
+
+.pay-form h2 { color: #fff; margin: 0 0 14px; font-weight: 900; }
+.summary { color: rgba(255, 255, 255, 0.85); margin-bottom: 12px; }
+.summary strong { color: #fff; }
+
+.test-cards {
+  background: rgba(245, 166, 35, 0.15);
+  border: 1px dashed rgba(245, 166, 35, 0.6);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  color: #ffe1ae;
+}
+.test-cards code { background: rgba(255, 255, 255, 0.15); color: #fff; padding: 2px 6px; border-radius: 4px; }
 
 .field { margin-bottom: 14px; display: flex; flex-direction: column; }
 .field-row { display: flex; gap: 16px; }
 .field-row .field { flex: 1; }
-label { font-size: 13px; font-weight: 600; color: #333; margin-bottom: 6px; }
-input { padding: 10px 12px; border: 1px solid #ccd2de; border-radius: 8px; font-size: 14px; outline: none; }
-input:focus { border-color: #3d6ce0; }
-.error { color: #c0392b; font-size: 12px; margin-top: 4px; }
+label { font-size: 13px; font-weight: 700; color: rgba(255, 255, 255, 0.85); margin-bottom: 6px; }
+input {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input::placeholder { color: rgba(255, 255, 255, 0.6); }
+input:focus { border-color: #fff; }
+.error { color: #ffb4a8; font-size: 12px; margin-top: 4px; }
 
-.btn-primary { width: 100%; padding: 13px; background: #3d6ce0; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; }
-.btn-primary:hover:not(:disabled) { background: #2f56b8; }
-.btn-primary:disabled { background: #a9b8de; cursor: not-allowed; }
+.btn-primary {
+  width: 100%;
+  padding: 13px;
+  background: #fff;
+  color: var(--deepblue);
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:hover:not(:disabled) { background: var(--peach); color: #1a1a1a; }
+.btn-primary:disabled { background: rgba(255, 255, 255, 0.5); color: rgba(10,46,92,0.5); cursor: not-allowed; }
 
-.btn-secondary { margin-top: 16px; width: 100%; padding: 12px; background: #fff; color: #3d6ce0; border: 2px solid #3d6ce0; border-radius: 10px; font-weight: 600; cursor: pointer; }
-.btn-secondary:hover { background: #eef3ff; }
+.btn-secondary {
+  margin-top: 12px;
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.12); }
 
-.ticket { text-align: center; }
-.ticket h2 { color: #1a7a3d; margin-bottom: 16px; }
+.ticket {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.ticket h2 { color: #fff; margin: 8px 0 16px; font-weight: 900; }
+
+.success-badge, .fail-badge {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 4px;
+}
+.success-badge { background: var(--green); }
+.fail-badge { background: var(--red); }
+
 .ticket-card {
-  background: #f6f8fb;
-  border: 2px dashed #7d8ba1;
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
   padding: 20px;
   text-align: left;
   font-family: 'Courier New', monospace;
+  color: #0B1220;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
 }
-.ticket-title { text-align: center; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; }
+.ticket-title { text-align: center; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; color: var(--deepblue); }
 .passengers-label { font-weight: 700; margin-bottom: 6px; }
 .passenger-row { padding: 3px 0; }
 .status-badge { text-align: center; font-weight: 700; padding: 8px; border-radius: 8px; margin-top: 10px; }
-.status-confirmed { background: #e3f7e8; color: #1a7a3d; }
+.status-confirmed { background: #e3f7e8; color: var(--green); }

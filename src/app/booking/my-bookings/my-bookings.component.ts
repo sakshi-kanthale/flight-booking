@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { BookingService } from '../services/booking.service';
 import { Booking } from '../models/booking';
+import { FlightService } from '../../flight/services/flight.service';
+import { Flight } from '../../flight/models/flight';
 
 @Component({
   selector: 'app-my-bookings',
@@ -14,6 +17,7 @@ import { Booking } from '../models/booking';
 export class MyBookingsComponent implements OnInit {
 
   bookings: Booking[] = [];
+  flightsMap: { [flightId: number]: Flight } = {};
 
   loading = true;
   errorMessage = '';
@@ -25,6 +29,7 @@ export class MyBookingsComponent implements OnInit {
 
   constructor(
     private bookingService: BookingService,
+    private flightService: FlightService,
     private router: Router
   ) {}
 
@@ -52,6 +57,7 @@ export class MyBookingsComponent implements OnInit {
         );
 
         this.loading = false;
+        this.loadFlightsForBookings();
       },
 
       error: () => {
@@ -62,20 +68,48 @@ export class MyBookingsComponent implements OnInit {
     });
   }
 
- 
-payForBooking(bookingId: number): void {
-  console.log('Pay Now clicked');
-  console.log('Booking ID:', bookingId);
+  // Fetches flight details (route, times) for each unique flightId among the bookings.
+  // If this fails, booking cards still render fine — just without the route section.
+  private loadFlightsForBookings(): void {
+    const uniqueFlightIds = Array.from(new Set(this.bookings.map(b => b.flightId)));
+    if (uniqueFlightIds.length === 0) return;
 
-  this.router.navigate(['/booking/payment', bookingId])
-    .then(success => {
-      console.log('Navigation successful:', success);
-      console.log('Current URL:', window.location.href);
-    })
-    .catch(error => {
-      console.error('Navigation failed:', error);
+    const requests = uniqueFlightIds.map(id => this.flightService.getFlightById(id));
+    forkJoin(requests).subscribe({
+      next: (flights) => {
+        flights.forEach((flight, idx) => {
+          this.flightsMap[uniqueFlightIds[idx]] = flight;
+        });
+      },
+      error: () => {
+        // Silently ignore — route section just won't show for affected bookings.
+      }
     });
-}
+  }
+
+  getDuration(flight: Flight): string {
+    const dep = new Date(flight.departureTime).getTime();
+    const arr = new Date(flight.arrivalTime).getTime();
+    const diffMs = arr - dep;
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+  }
+
+  payForBooking(bookingId: number): void {
+    console.log('Pay Now clicked');
+    console.log('Booking ID:', bookingId);
+
+    this.router.navigate(['/booking/payment', bookingId])
+      .then(success => {
+        console.log('Navigation successful:', success);
+        console.log('Current URL:', window.location.href);
+      })
+      .catch(error => {
+        console.error('Navigation failed:', error);
+      });
+  }
+
   askCancel(bookingId: number): void {
     this.confirmingId = bookingId;
   }
@@ -126,7 +160,8 @@ payForBooking(bookingId: number): void {
         }
 
       });
-    }
+  }
+
   canCancel(booking: Booking): boolean {
     return booking.status === 'CONFIRMED';
   }

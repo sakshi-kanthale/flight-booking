@@ -1,22 +1,58 @@
 <div class="seat-selection-container" *ngIf="!loading; else loadingBlock">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
   <div *ngIf="errorMessage" class="error-banner">{{ errorMessage }}</div>
 
-  <div *ngIf="flight" class="flight-summary">
-    <h3>{{ flight.flightNumber }} — {{ flight.departureAirportCode }} → {{ flight.arrivalAirportCode }}</h3>
-    <p>{{ flight.departureTime | date:'dd MMM y, h:mm a' }}</p>
-  </div>
+  <div class="phone-card">
 
-  <label for="seats">Select seat(s)</label>
-  <select id="seats" multiple size="8" (change)="onSeatChange($event)">
-    <option *ngFor="let seat of availableSeats" [value]="seat.seatId">{{ seat.seatNumber }}</option>
-  </select>
-  <p class="hint">Hold Ctrl (or Cmd) to select multiple seats.</p>
+    <div *ngIf="flight" class="seat-header">
+      <span>{{ flight.departureAirportCode }} → {{ flight.arrivalAirportCode }} · {{ flight.departureTime | date:'d MMM' }}</span>
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="white"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+    </div>
 
-  <div class="footer" *ngIf="flight">
-    <p>{{ selectedSeats.length }} seat(s) selected — ₹{{ totalPrice }}</p>
-    <button class="btn-primary" [disabled]="selectedSeats.length === 0" (click)="proceedToPassengerDetails()">
-      Continue to Passenger Details
-    </button>
+    <div class="seat-legend">
+      <div><span class="legend-dot legend-available"></span>Available</div>
+      <div><span class="legend-dot legend-occupied"></span>Occupied</div>
+      <div><span class="legend-dot legend-selected"></span>Selected</div>
+    </div>
+
+    <div class="seat-grid">
+      <div class="seat-row" *ngFor="let r of seatRows">
+        <div
+          class="seat"
+          *ngFor="let seat of r.left"
+          [class.avail]="!isOccupied(seat) && !isSelected(seat)"
+          [class.occ]="isOccupied(seat)"
+          [class.sel]="isSelected(seat)"
+          (click)="toggleSeat(seat)">
+          {{ seat.seatNumber }}
+        </div>
+
+        <div class="aisle"></div>
+
+        <div
+          class="seat"
+          *ngFor="let seat of r.right"
+          [class.avail]="!isOccupied(seat) && !isSelected(seat)"
+          [class.occ]="isOccupied(seat)"
+          [class.sel]="isSelected(seat)"
+          (click)="toggleSeat(seat)">
+          {{ seat.seatNumber }}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer" *ngIf="flight">
+      <div class="sel-info">
+        Selected
+        <b>{{ selectedSeats.length ? selectedSeatNumbers : '—' }} · ₹{{ totalPrice }}</b>
+      </div>
+      <button class="btn-primary" [disabled]="selectedSeats.length === 0" (click)="proceedToPassengerDetails()">
+        Continue
+      </button>
+    </div>
+
   </div>
 </div>
 <ng-template #loadingBlock><p>Loading seats...</p></ng-template>

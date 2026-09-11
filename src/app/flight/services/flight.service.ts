@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Flight } from '../models/flight';
 
-const BASE_URL = 'https://unstylish-gents-magenta.ngrok-free.dev/api/flights';
+const BASE_URL = 'https://unstylish-gents-magenta.ngrok-free.dev/api';
 
 const HEADERS = new HttpHeaders({
   'ngrok-skip-browser-warning': 'true',
