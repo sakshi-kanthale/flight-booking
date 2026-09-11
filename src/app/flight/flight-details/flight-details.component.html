@@ -1,59 +1,52 @@
 <div class="details-container">
-
   <div class="details-card" *ngIf="flight">
 
-    <h2>Flight {{ flight.flightNumber }}</h2>
+    <div class="header">
+      <div>
+        <h2>{{ flight.airlineName }}</h2>
+        <p>{{ flight.flightNumber }}</p>
+      </div>
+    </div>
 
-    <p>
-      <strong>From:</strong>
-      {{ flight.departureAirportCode }}
-      - {{ flight.departureAirportName }}
-    </p>
+    <div class="route">
+      <div class="airport">
+        <h1>{{ flight.departureAirportCode }}</h1>
+        <p>{{ flight.departureAirportName }}</p>
+        <strong>{{ flight.departureTime | date:'hh:mm a' }}</strong>
+        <span>{{ flight.departureTime | date:'dd MMM yyyy' }}</span>
+      </div>
 
-    <p>
-      <strong>To:</strong>
-      {{ flight.arrivalAirportCode }}
-      - {{ flight.arrivalAirportName }}
-    </p>
+      <div class="journey">
+        <strong>{{ getDuration() }}</strong>
+        <div class="line">────────:airplane:────────</div>
+        <span>Direct Flight</span>
+      </div>
 
-    <p>
-      <strong>Departure:</strong>
-      {{ flight.departureTime }}
-    </p>
+      <div class="airport">
+        <h1>{{ flight.arrivalAirportCode }}</h1>
+        <p>{{ flight.arrivalAirportName }}</p>
+        <strong>{{ flight.arrivalTime | date:'hh:mm a' }}</strong>
+        <span>{{ flight.arrivalTime | date:'dd MMM yyyy' }}</span>
+      </div>
+    </div>
 
-    <p>
-      <strong>Arrival:</strong>
-      {{ flight.arrivalTime }}
-    </p>
+    <div class="info">
+      <div><span>Airline</span><strong>{{ flight.airlineName }}</strong></div>
+      <div><span>Flight</span><strong>{{ flight.flightNumber }}</strong></div>
+      <div><span>Duration</span><strong>{{ getDuration() }}</strong></div>
+      <div><span>Price / Seat</span><strong>₹{{ flight.pricePerSeat }}</strong></div>
+    </div>
 
-    <p>
-      <strong>Total Seats:</strong>
-      {{ flight.totalSeats }}
-    </p>
-
-    <p>
-      <strong>Price per Seat:</strong>
-      ₹{{ flight.pricePerSeat }}
-    </p>
-
-    <p>
-      <strong>Status:</strong>
-      {{ flight.status }}
-    </p>
-
-    <button
-      type="button"
-      class="book-now-button"
-      (click)="bookNow()">
-      Book Now
-    </button>
+    <div class="booking">
+      <div>
+        <span>Starting from</span>
+        <strong>₹{{ flight.pricePerSeat }}</strong>
+        <small>per seat</small>
+      </div>
+      <button (click)="bookNow()">Book Now</button>
+    </div>
 
   </div>
 
-  <p
-    class="error"
-    *ngIf="errorMessage">
-    {{ errorMessage }}
-  </p>
-
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 </div>

@@ -84,7 +84,7 @@ export class RegisterComponent {
     this.authService.register(payload).subscribe({
       next: () => {
         this.submitting = false;
-        this.successMessage = 'Registration successful! Redirecting to login...';
+        this.successMessage = 'Registration successful!';
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 1200);
@@ -92,7 +92,7 @@ export class RegisterComponent {
       error: (err) => {
         this.submitting = false;
         if (err.status === 409) {
-          this.errorMessage = 'An account with this email already exists.';
+          this.errorMessage = 'An account with this email already exists, Please login';
         } else if (err.status === 400) {
           this.errorMessage = 'Some details are invalid. Please check and try again.';
         } else if (err.status === 0) {

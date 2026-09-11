@@ -1,43 +1,129 @@
 <header class="topbar">
-  <div class="logo">✈ FlightBooking</div>
+  <div class="logo">
+    <svg width="24" height="24" viewBox="0 0 16 16" fill="#0B1E3D"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+    <span>Flight<span class="logo-accent">Booking</span></span>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/" class="active">Home</a>
+    <a *ngIf="isLoggedIn" routerLink="/booking/my-bookings">My Bookings</a>
+  </nav>
+
   <div class="auth-links" *ngIf="!isLoggedIn">
-    <a routerLink="/login">Login</a>
+    <a routerLink="/login" class="link-plain">Login</a>
     <a routerLink="/register" class="btn-outline">Register</a>
   </div>
   <div class="auth-links" *ngIf="isLoggedIn">
-    <a routerLink="/booking/my-bookings">My Bookings</a>
-    <span class="username">{{ currentUserName }}</span>
+    <span class="user-chip">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B1E3D" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+      {{ currentUserName }}
+    </span>
     <button class="btn-outline" (click)="logout()">Logout</button>
   </div>
 </header>
 
 <section class="hero">
-  <h1>Find your next flight</h1>
-  <p>Search, compare and book domestic flights across India</p>
+  <div class="hero-glow glow1"></div>
+  <div class="hero-glow glow2"></div>
 
-  <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)" class="search-card">
-    <div class="form-row">
-      <label>From</label>
-      <select name="fromAirportCode" [(ngModel)]="searchCriteria.fromAirportCode" required>
-        <option value="" disabled selected>Departure airport</option>
-        <option *ngFor="let a of airports" [value]="a.airportCode">{{ a.airportCode }} - {{ a.airportName }}</option>
-      </select>
+  <svg class="hero-plane plane1" width="40" height="40" viewBox="0 0 16 16" fill="#22D3EE"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+  <svg class="hero-plane plane2" width="54" height="54" viewBox="0 0 16 16" fill="#FF7A45"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+
+  <div class="hero-content">
+    <div class="eyebrow"><span></span> EXPLORE <span></span></div>
+    <h1>Explore <span class="accent-word">India</span></h1>
+    <h1 class="h1-sub">A land of Rich Heritage</h1>
+    <p class="tagline">One country. A thousand stories. Your journey begins here.</p>
+
+    <div class="benefits-row">
+      <div class="benefit">
+        <div class="benefit-icon cyan">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B1E3D" stroke-width="2.5"><path d="M4 12l6 6L20 6"/></svg>
+        </div>
+        <div><strong>Best Prices</strong><span>Guaranteed</span></div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon orange">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6z"/></svg>
+        </div>
+        <div><strong>Instant Booking</strong><span>in Seconds</span></div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon cyan">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B1E3D" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <div><strong>24/7 Support</strong><span>Always With You</span></div>
+      </div>
     </div>
-    <div class="form-row">
-      <label>To</label>
-      <select name="toAirportCode" [(ngModel)]="searchCriteria.toAirportCode" required>
-        <option value="" disabled selected>Arrival airport</option>
-        <option *ngFor="let a of airports" [value]="a.airportCode">{{ a.airportCode }} - {{ a.airportName }}</option>
-      </select>
+  </div>
+
+  <div class="search-wrapper" id="search-section">
+    <div class="search-card">
+      <form #searchForm="ngForm" (ngSubmit)="onSearch(searchForm)" class="search-grid">
+        <div class="form-row">
+          <label>From</label>
+          <div class="input-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A45" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/></svg>
+            <select name="fromAirportCode" [(ngModel)]="searchCriteria.fromAirportCode" required>
+              <option value="" disabled selected>Departure airport</option>
+              <option *ngFor="let a of airports" [value]="a.airportCode">{{ a.airportCode }} - {{ a.airportName }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>To</label>
+          <div class="input-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A45" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/></svg>
+            <select name="toAirportCode" [(ngModel)]="searchCriteria.toAirportCode" required>
+              <option value="" disabled selected>Arrival airport</option>
+              <option *ngFor="let a of airports" [value]="a.airportCode">{{ a.airportCode }} - {{ a.airportName }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>Departure Date</label>
+          <div class="input-icon">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FF7A45" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>
+            <input type="date" name="date" [(ngModel)]="searchCriteria.date" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-search" [disabled]="searchForm.invalid || loading">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+          {{ loading ? 'Searching...' : 'Search Flights' }}
+        </button>
+      </form>
     </div>
-    <div class="form-row">
-      <label>Date</label>
-      <input type="date" name="date" [(ngModel)]="searchCriteria.date" required>
+  </div>
+
+  <div class="feature-strip">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="#22D3EE"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+      </div>
+      <div><strong>Wide Network</strong><span>100+ Domestic Cities</span></div>
     </div>
-    <button type="submit" class="btn-primary" [disabled]="searchForm.invalid || loading">
-      {{ loading ? 'Searching...' : 'Search Flights' }}
-    </button>
-  </form>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2"><path d="M20.59 13.41 12 22l-9-9 8.59-8.59A2 2 0 0 1 13 4h6a1 1 0 0 1 1 1v6a2 2 0 0 1-.41 1.41z"/><circle cx="16.5" cy="7.5" r="1.5"/></svg>
+      </div>
+      <div><strong>Best Fare Guarantee</strong><span>Lowest Prices Always</span></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2"><path d="M12 2 3 6v6c0 5 3.8 9.4 9 10 5.2-.6 9-5 9-10V6l-9-4z"/></svg>
+      </div>
+      <div><strong>Secure Payments</strong><span>100% Safe &amp; Encrypted</span></div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" stroke-width="2"><path d="M12 2l2.9 6 6.6.6-5 4.4 1.5 6.4L12 16l-5.9 3.4L7.6 13l-5-4.4 6.6-.6L12 2z"/></svg>
+      </div>
+      <div><strong>Hassle-Free Booking</strong><span>Easy Cancellations</span></div>
+    </div>
+  </div>
 
   <div *ngIf="errorMessage" class="error-banner">{{ errorMessage }}</div>
   <div *ngIf="searched && !loading && flights.length === 0 && !errorMessage" class="no-results">
@@ -47,38 +133,42 @@
   <div class="results-list" *ngIf="flights.length > 0">
     <div class="flight-card" *ngFor="let flight of flights">
       <div class="flight-info">
-        <strong>{{ flight.airlineName }} ({{ flight.airlineCode }}) — {{ flight.flightNumber }}</strong>
-        <p>{{ flight.departureAirportCode }} → {{ flight.arrivalAirportCode }}</p>
-        <p>{{ flight.departureTime | date:'dd MMM y, h:mm a' }} — {{ flight.arrivalTime | date:'dd MMM y, h:mm a' }}</p>
-        <p class="price">₹{{ flight.pricePerSeat }} / seat</p>
+        <div class="flight-top-row">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="#FF7A45"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.318-1.318-.375-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849z"/></svg>
+          <strong>{{ flight.airlineName }} ({{ flight.airlineCode }}) — {{ flight.flightNumber }}</strong>
+        </div>
+        <p class="route-line">
+          <span class="airport-code">{{ flight.departureAirportCode }}</span>
+          <svg width="16" height="12" viewBox="0 0 24 24" fill="none" stroke="#E2E8F0" stroke-width="2"><path d="M2 12h18M14 6l6 6-6 6"/></svg>
+          <span class="airport-code">{{ flight.arrivalAirportCode }}</span>
+        </p>
+        <p class="time-line">
+          {{ flight.departureTime | date:'d MMM, h:mm a' }} &nbsp;→&nbsp; {{ flight.arrivalTime | date:'d MMM, h:mm a' }}
+        </p>
+        <p class="price">₹{{ flight.pricePerSeat }} <span>/ seat</span></p>
       </div>
-      <button class="btn-primary" (click)="viewDetails(flight)">View Details</button>
+      <button class="btn-search btn-view" (click)="viewDetails(flight)">View Details</button>
     </div>
   </div>
 </section>
 
-<section class="info-section">
-  <h2>Why fly with us</h2>
-  <div class="info-grid">
-    <div class="info-card">
-      <h3>🇮🇳 Domestic Flights</h3>
-      <p>Covering major Indian cities with reliable scheduled flights.</p>
+<section class="trust-section">
+  <div class="trust-grid">
+    <div class="trust-stat">
+      <strong>100+</strong>
+      <span>Domestic Cities Covered</span>
     </div>
-    <div class="info-card">
-      <h3>📍 Popular Destinations</h3>
-      <p>Delhi, Mumbai, Bangalore, Hyderabad and more — all in one place.</p>
+    <div class="trust-stat">
+      <strong>50,000+</strong>
+      <span>Happy Travellers</span>
     </div>
-    <div class="info-card">
-      <h3>⚡ Easy Booking</h3>
-      <p>Search, pick your seat, pay securely, get your ticket instantly.</p>
+    <div class="trust-stat">
+      <strong>99.8%</strong>
+      <span>On-Time Performance</span>
     </div>
-  </div>
-
-  <h2>How it works</h2>
-  <div class="steps">
-    <div class="step"><span>1</span>Search your route and date</div>
-    <div class="step"><span>2</span>Pick your flight and seat</div>
-    <div class="step"><span>3</span>Enter passenger details</div>
-    <div class="step"><span>4</span>Pay and get your ticket</div>
+    <div class="trust-stat">
+      <strong>24/7</strong>
+      <span>Customer Support</span>
+    </div>
   </div>
 </section>

@@ -1,25 +1,149 @@
 .details-container {
+  min-height: 80vh;
   display: flex;
   justify-content: center;
-  padding: 40px;
+  align-items: center;
+  padding: 35px 20px;
+  background: #f5f7fa;
 }
 
 .details-card {
-  border: 1px solid #ccc;
-  padding: 30px;
-  width: 400px;
+  width: 800px;
+  max-width: 100%;
+  padding: 32px 35px;
+  background: white;
+  border: 1px solid #e0e4e8;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(0,0,0,.08);
+}
+
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-bottom: 18px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 29px;
+  color: #222;
+}
+
+.header p {
+  margin: 5px 0 0;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 35px 0;
+}
+
+.airport {
+  flex: 1;
+  text-align: center;
+}
+
+.airport h1 {
+  margin: 0 0 5px;
+  font-size: 34px;
+  color: #222;
+}
+
+.airport p {
+  height: 38px;
+  margin: 0 0 12px;
+  color: #777;
+  font-size: 14px;
+}
+
+.airport strong {
+  display: block;
+  font-size: 23px;
+}
+
+.airport span,
+.journey span {
+  font-size: 13px;
+  color: #777;
+}
+
+.journey {
+  text-align: center;
+  color: #4caf50;
+}
+
+.line {
+  margin: 8px 0;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-block: 1px solid #e5e5e5;
+}
+
+.info div {
+  padding: 18px 10px;
+  text-align: center;
+  border-right: 1px solid #e5e5e5;
+}
+
+.info div:last-child {
+  border: 0;
+}
+
+.info span,
+.booking span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  color: #777;
+}
+
+.booking {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 28px;
+}
+
+.booking strong {
+  font-size: 25px;
+}
+
+.booking small {
+  margin-left: 5px;
+  color: #777;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  border: none;
-  cursor: pointer;
-  background-color: #4CAF50;
+  padding: 13px 35px;
+  border: 0;
+  border-radius: 6px;
+  background: #4caf50;
   color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #43a047;
 }
 
 .error {
-  color: red;
+  color: #d32f2f;
+}
+
+@media (max-width: 650px) {
+  .route { flex-direction: column; }
+  .info { grid-template-columns: repeat(2, 1fr); }
+  .booking { gap: 20px; }
+  button { width: 100%; }
 }

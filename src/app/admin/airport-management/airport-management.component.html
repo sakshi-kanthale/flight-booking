@@ -64,12 +64,8 @@
           name="country"
           [(ngModel)]="airportData.country"
           #country="ngModel"
-          placeholder="e.g. India"
-          required
+          readonly
         />
-        <small class="error" *ngIf="country.invalid && country.touched">
-          Country is required.
-        </small>
       </div>
     </div>
 
