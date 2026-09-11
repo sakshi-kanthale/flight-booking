@@ -43,6 +43,15 @@ export class AuthService {
     return raw ? JSON.parse(raw) : null;
   }
 
+  getRole(): string | null {
+    const user = this.getCurrentUser();
+    return user?.role ? String(user.role).toUpperCase() : null;
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ADMIN';
+  }
+
   logout(): void {
     localStorage.removeItem('userId');
     localStorage.removeItem('currentUser');

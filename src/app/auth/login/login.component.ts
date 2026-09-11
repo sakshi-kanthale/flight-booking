@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -15,6 +15,7 @@ export class LoginComponent {
   form: FormGroup;
   submitting = false;
   errorMessage = '';
+  successMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -29,6 +30,8 @@ export class LoginComponent {
 
   submit(): void {
     this.errorMessage = '';
+    this.successMessage = '';
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.errorMessage = 'Please enter a valid email and password.';
@@ -39,13 +42,16 @@ export class LoginComponent {
     this.authService.login(this.form.value).subscribe({
       next: (res) => {
         this.submitting = false;
+        this.successMessage = 'Login successful!';
         const role = (res?.role || '').toString().toUpperCase();
 
-        if (role === 'ADMIN') {
-          this.router.navigate(['/admin/dashboard']);
-        } else {
-          this.router.navigate(['/']); // user home / flight search
-        }
+        setTimeout(() => {
+          if (role === 'ADMIN') {
+            this.router.navigate(['/admin/dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
+        }, 900);
       },
       error: (err) => {
         this.submitting = false;

@@ -7,6 +7,8 @@
       <div class="step" [class.active]="step === 2">2</div>
     </div>
 
+    
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
     <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
 
     <!-- STEP 1: ACCOUNT -->
