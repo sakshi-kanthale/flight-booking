@@ -1,71 +1,127 @@
-<div class="admin-container">
-  <h2>Airline Management</h2>
+<div class="admin-container admin-page">
 
-  <form #airlineForm="ngForm" (ngSubmit)="onSubmit(airlineForm)">
-    <div class="form-row">
-      <div class="form-input">
-        <label for="airlineCode">Airline Code</label>
-        <input
-          type="text"
-          id="airlineCode"
-          name="airlineCode"
-          [(ngModel)]="airlineData.airlineCode"
-          #airlineCode="ngModel"
-          placeholder="e.g. AI"
-          required
-          minlength="2"
-          maxlength="3"
-        />
-        <small class="error" *ngIf="airlineCode.invalid && airlineCode.touched">
-          Code must be 2-3 characters.
-        </small>
-      </div>
-
-      <div class="form-input">
-        <label for="airlineName">Airline Name</label>
-        <input
-          type="text"
-          id="airlineName"
-          name="airlineName"
-          [(ngModel)]="airlineData.airlineName"
-          #airlineName="ngModel"
-          placeholder="e.g. Air India"
-          required
-        />
-        <small class="error" *ngIf="airlineName.invalid && airlineName.touched">
-          Airline name is required.
-        </small>
-      </div>
+  <div class="page-header">
+    <div class="page-header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849m.894.448C7.111 2.02 7 2.569 7 3v4a.5.5 0 0 1-.276.447l-5.448 2.724a.5.5 0 0 0-.276.447v.792l5.418-.903a.5.5 0 0 1 .575.41l.5 3a.5.5 0 0 1-.14.437L6.708 15h2.586l-.647-.646a.5.5 0 0 1-.14-.436l.5-3a.5.5 0 0 1 .576-.411L15 11.41v-.792a.5.5 0 0 0-.276-.447L9.276 7.447A.5.5 0 0 1 9 7V3c0-.432-.11-.979-.322-1.401C8.458 1.159 8.213 1 8 1s-.458.158-.678.599"/>
+      </svg>
     </div>
+    <div>
+      <h2>Airline Management</h2>
+      <p class="page-subtitle">Add, edit or remove airline records</p>
+    </div>
+  </div>
 
-    <button type="submit" [disabled]="airlineForm.invalid">
-      {{ isEditing ? 'Update Airline' : 'Add Airline' }}
-    </button>
-    <button type="button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
-  </form>
+  <!-- FORM PANEL -->
+  <div class="glass-panel form-panel">
+    <h3 class="panel-title">{{ isEditing ? 'Edit Airline' : 'Add New Airline' }}</h3>
 
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <form #airlineForm="ngForm" (ngSubmit)="onSubmit(airlineForm)">
+      <div class="form-row">
+        <div class="form-input">
+          <label for="airlineCode">Airline Code</label>
+          <input
+            type="text"
+            id="airlineCode"
+            name="airlineCode"
+            [(ngModel)]="airlineData.airlineCode"
+            #airlineCode="ngModel"
+            placeholder="e.g. AI"
+            required
+            minlength="2"
+            maxlength="3"
+          />
+          <small class="error" *ngIf="airlineCode.invalid && airlineCode.touched">
+            Code must be 2-3 characters.
+          </small>
+        </div>
 
-  <table class="admin-table" *ngIf="airlines.length > 0">
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Name</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let airline of airlines">
-        <td>{{ airline.airlineCode }}</td>
-        <td>{{ airline.airlineName }}</td>
-        <td>
-          <button (click)="editAirline(airline)">Edit</button>
-          <button (click)="deleteAirline(airline.airlineId)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        <div class="form-input">
+          <label for="airlineName">Airline Name</label>
+          <input
+            type="text"
+            id="airlineName"
+            name="airlineName"
+            [(ngModel)]="airlineData.airlineName"
+            #airlineName="ngModel"
+            placeholder="e.g. Air India"
+            required
+          />
+          <small class="error" *ngIf="airlineName.invalid && airlineName.touched">
+            Airline name is required.
+          </small>
+        </div>
+      </div>
 
-  <p *ngIf="airlines.length === 0">No airlines added yet.</p>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="airlineForm.invalid">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+          </svg>
+          {{ isEditing ? 'Update Airline' : 'Add Airline' }}
+        </button>
+        <button type="button" class="btn-secondary" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <p class="error" *ngIf="errorMessage">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+    </svg>
+    {{ errorMessage }}
+  </p>
+  <p class="success" *ngIf="successMessage">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </svg>
+    {{ successMessage }}
+  </p>
+
+  <!-- TABLE PANEL -->
+  <div class="glass-panel table-panel" *ngIf="airlines.length > 0">
+    <h3 class="panel-title">
+      All Airlines
+      <span class="count-badge">{{ airlines.length }}</span>
+    </h3>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let airline of airlines">
+            <td><span class="code-pill">{{ airline.airlineCode }}</span></td>
+            <td>{{ airline.airlineName }}</td>
+            <td class="actions-col">
+              <button class="icon-btn edit-btn" (click)="editAirline(airline)" title="Edit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+              </button>
+              <button class="icon-btn delete-btn" (click)="deleteAirline(airline.airlineId)" title="Delete">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state glass-panel" *ngIf="airlines.length === 0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438zM3.809 3.563A1.5 1.5 0 0 1 4.981 3h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a.5.5 0 0 1 .105.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z"/>
+    </svg>
+    <p>No airlines added yet.</p>
+  </div>
+
 </div>

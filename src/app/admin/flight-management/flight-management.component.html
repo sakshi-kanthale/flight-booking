@@ -1,113 +1,211 @@
-<div class="admin-container">
-  <h2>Flight Management</h2>
+<div class="admin-container admin-page">
 
-  <form #flightForm="ngForm" (ngSubmit)="onSubmit(flightForm)">
-    <div class="form-row">
-      <div class="form-input">
-        <label for="airlineId">Airline</label>
-        <select id="airlineId" name="airlineId" [(ngModel)]="flightData.airlineId" required>
-          <option [ngValue]="null" disabled>Select airline</option>
-          <option *ngFor="let a of airlines" [ngValue]="a.airlineId">
-            {{ a.airlineName }} ({{ a.airlineCode }})
-          </option>
-        </select>
-      </div>
-
-      <div class="form-input">
-        <label for="flightNumber">Flight Number</label>
-        <input type="text" id="flightNumber" name="flightNumber" [(ngModel)]="flightData.flightNumber" placeholder="e.g. AI101" required />
-      </div>
+  <div class="page-header">
+    <div class="page-header-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+        <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z"/>
+      </svg>
     </div>
-
-    <div class="form-row">
-      <div class="form-input">
-        <label for="departureAirportCode">Departure Airport</label>
-        <select id="departureAirportCode" name="departureAirportCode" [(ngModel)]="flightData.departureAirportCode" required>
-          <option [ngValue]="''" disabled>Select departure airport</option>
-          <option *ngFor="let ap of airports" [ngValue]="ap.airportCode">
-            {{ ap.airportCode }} - {{ ap.airportName }}
-          </option>
-        </select>
-      </div>
-
-      <div class="form-input">
-        <label for="arrivalAirportCode">Arrival Airport</label>
-        <select id="arrivalAirportCode" name="arrivalAirportCode" [(ngModel)]="flightData.arrivalAirportCode" required>
-          <option [ngValue]="''" disabled>Select arrival airport</option>
-          <option *ngFor="let ap of airports" [ngValue]="ap.airportCode">
-            {{ ap.airportCode }} - {{ ap.airportName }}
-          </option>
-        </select>
-      </div>
+    <div>
+      <h2>Flight Management</h2>
+      <p class="page-subtitle">Create and update flight schedules</p>
     </div>
+  </div>
 
-    <div class="form-row">
-      <div class="form-input">
-        <label for="departureDate">Departure Date</label>
-        <input type="date" id="departureDate" name="departureDate" [(ngModel)]="flightData.departureDate" required />
+  <!-- FORM PANEL -->
+  <div class="glass-panel form-panel">
+    <h3 class="panel-title">{{ isEditing ? 'Edit Flight' : 'Add New Flight' }}</h3>
+
+    <form #flightForm="ngForm" (ngSubmit)="onSubmit(flightForm)">
+
+      <!-- SECTION: Airline & Flight -->
+      <div class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849"/></svg>
+        Airline &amp; Flight
       </div>
-      <div class="form-input">
-        <label for="departureTimeOnly">Departure Time</label>
-        <input type="time" id="departureTimeOnly" name="departureTimeOnly" [(ngModel)]="flightData.departureTimeOnly" required />
+      <div class="form-row">
+        <div class="form-input">
+          <label for="airlineId">Airline</label>
+          <select id="airlineId" name="airlineId" [(ngModel)]="flightData.airlineId" required>
+            <option [ngValue]="null" disabled>Select airline</option>
+            <option *ngFor="let a of airlines" [ngValue]="a.airlineId">
+              {{ a.airlineName }} ({{ a.airlineCode }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-input">
+          <label for="flightNumber">Flight Number</label>
+          <input type="text" id="flightNumber" name="flightNumber" [(ngModel)]="flightData.flightNumber" placeholder="e.g. AI101" required />
+        </div>
       </div>
+
+      <!-- SECTION: Route -->
+      <div class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/></svg>
+        Route
+      </div>
+      <div class="form-row route-row">
+        <div class="form-input">
+          <label for="departureAirportCode">Departure Airport</label>
+          <select id="departureAirportCode" name="departureAirportCode" [(ngModel)]="flightData.departureAirportCode" required>
+            <option [ngValue]="''" disabled>Select departure airport</option>
+            <option *ngFor="let ap of airports" [ngValue]="ap.airportCode">
+              {{ ap.airportCode }} - {{ ap.airportName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="route-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+        </div>
+
+        <div class="form-input">
+          <label for="arrivalAirportCode">Arrival Airport</label>
+          <select id="arrivalAirportCode" name="arrivalAirportCode" [(ngModel)]="flightData.arrivalAirportCode" required>
+            <option [ngValue]="''" disabled>Select arrival airport</option>
+            <option *ngFor="let ap of airports" [ngValue]="ap.airportCode">
+              {{ ap.airportCode }} - {{ ap.airportName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SECTION: Schedule -->
+      <div class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/></svg>
+        Schedule
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-block">
+          <div class="schedule-block-label">Departure</div>
+          <div class="form-row">
+            <div class="form-input">
+              <label for="departureDate">Date</label>
+              <input type="date" id="departureDate" name="departureDate" [(ngModel)]="flightData.departureDate" required />
+            </div>
+            <div class="form-input">
+              <label for="departureTimeOnly">Time</label>
+              <input type="time" id="departureTimeOnly" name="departureTimeOnly" [(ngModel)]="flightData.departureTimeOnly" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="schedule-block">
+          <div class="schedule-block-label">Arrival</div>
+          <div class="form-row">
+            <div class="form-input">
+              <label for="arrivalDate">Date</label>
+              <input type="date" id="arrivalDate" name="arrivalDate" [(ngModel)]="flightData.arrivalDate" required />
+            </div>
+            <div class="form-input">
+              <label for="arrivalTimeOnly">Time</label>
+              <input type="time" id="arrivalTimeOnly" name="arrivalTimeOnly" [(ngModel)]="flightData.arrivalTimeOnly" required />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION: Capacity & Pricing -->
+      <div class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2H0Zm0 2h16v6a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5Zm4 3.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5Z"/></svg>
+        Capacity &amp; Pricing
+      </div>
+      <div class="form-row">
+        <div class="form-input">
+          <label for="totalSeats">Total Seats</label>
+          <input type="number" id="totalSeats" name="totalSeats" [(ngModel)]="flightData.totalSeats" min="1" required />
+        </div>
+        <div class="form-input">
+          <label for="pricePerSeat">Price Per Seat (₹)</label>
+          <input type="number" id="pricePerSeat" name="pricePerSeat" [(ngModel)]="flightData.pricePerSeat" min="1" required />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="flightForm.invalid">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/>
+          </svg>
+          {{ isEditing ? 'Update Flight' : 'Add Flight' }}
+        </button>
+        <button type="button" class="btn-secondary" *ngIf="isEditing" (click)="cancelEdit(flightForm)">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <p class="error" *ngIf="errorMessage">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+    </svg>
+    {{ errorMessage }}
+  </p>
+  <p class="success" *ngIf="successMessage">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </svg>
+    {{ successMessage }}
+  </p>
+
+  <!-- TABLE PANEL -->
+  <div class="glass-panel table-panel" *ngIf="flights.length > 0">
+    <h3 class="panel-title">
+      All Flights
+      <span class="count-badge">{{ flights.length }}</span>
+    </h3>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Airline</th>
+            <th>Flight No.</th>
+            <th>Route</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Seats</th>
+            <th>Price</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let f of flights">
+            <td>{{ f.airlineName }} <span class="muted">({{ f.airlineCode }})</span></td>
+            <td><span class="code-pill">{{ f.flightNumber }}</span></td>
+            <td class="route-cell">
+              {{ f.departureAirportCode }}
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg>
+              {{ f.arrivalAirportCode }}
+            </td>
+            <td>{{ f.departureTime }}</td>
+            <td>{{ f.arrivalTime }}</td>
+            <td>{{ f.totalSeats }}</td>
+            <td>₹{{ f.pricePerSeat }}</td>
+            <td class="actions-col">
+              <button class="icon-btn edit-btn" (click)="editFlight(f)" title="Edit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                </svg>
+              </button>
+              <button class="icon-btn delete-btn" (click)="deleteFlight(f.flightId)" title="Delete">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <div class="form-row">
-      <div class="form-input">
-        <label for="arrivalDate">Arrival Date</label>
-        <input type="date" id="arrivalDate" name="arrivalDate" [(ngModel)]="flightData.arrivalDate" required />
-      </div>
-      <div class="form-input">
-        <label for="arrivalTimeOnly">Arrival Time</label>
-        <input type="time" id="arrivalTimeOnly" name="arrivalTimeOnly" [(ngModel)]="flightData.arrivalTimeOnly" required />
-      </div>
-    </div>
+  <!-- EMPTY STATE -->
+  <div class="empty-state glass-panel" *ngIf="flights.length === 0 && !errorMessage">
+    <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438zM3.809 3.563A1.5 1.5 0 0 1 4.981 3h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a.5.5 0 0 1 .105.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z"/>
+    </svg>
+    <p>No flights added yet.</p>
+  </div>
 
-    <div class="form-row">
-      <div class="form-input">
-        <label for="totalSeats">Total Seats</label>
-        <input type="number" id="totalSeats" name="totalSeats" [(ngModel)]="flightData.totalSeats" min="1" required />
-      </div>
-      <div class="form-input">
-        <label for="pricePerSeat">Price Per Seat</label>
-        <input type="number" id="pricePerSeat" name="pricePerSeat" [(ngModel)]="flightData.pricePerSeat" min="1" required />
-      </div>
-    </div>
-
-    <button type="submit" [disabled]="flightForm.invalid">
-      {{ isEditing ? 'Update Flight' : 'Add Flight' }}
-    </button>
-    <button type="button" *ngIf="isEditing" (click)="cancelEdit(flightForm)">Cancel</button>
-  </form>
-
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
-
-  <table *ngIf="flights.length > 0">
-    <tr>
-      <th>Airline</th>
-      <th>Flight No.</th>
-      <th>Route</th>
-      <th>Departure</th>
-      <th>Arrival</th>
-      <th>Seats</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let f of flights">
-      <td>{{ f.airlineName }} ({{ f.airlineCode }})</td>
-      <td>{{ f.flightNumber }}</td>
-      <td>{{ f.departureAirportCode }} → {{ f.arrivalAirportCode }}</td>
-      <td>{{ f.departureTime }}</td>
-      <td>{{ f.arrivalTime }}</td>
-      <td>{{ f.totalSeats }}</td>
-      <td>₹{{ f.pricePerSeat }}</td>
-      <td>
-        <button class="edit-btn" (click)="editFlight(f)">Edit</button>
-        <button class="delete-btn" (click)="deleteFlight(f.flightId)">Delete</button>
-      </td>
-    </tr>
-  </table>
-
-  <p *ngIf="flights.length === 0 && !errorMessage">No flights added yet.</p>
 </div>

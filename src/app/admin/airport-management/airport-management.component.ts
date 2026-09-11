@@ -49,15 +49,8 @@ export class AirportManagementComponent implements OnInit {
     );
 
     if (!this.isEditing && existingAirport) {
-      // Duplicate detected on "Add" — update instead of create
-      this.airportService.updateAirport(codeEntered, this.airportData).subscribe({
-        next: () => {
-          this.successMessage = 'Airport with this code already existed — updated the existing airport.';
-          this.resetForm(form);
-          this.loadAirports();
-        },
-        error: () => (this.errorMessage = 'Could not update the existing airport.'),
-      });
+      // Duplicate detected on "Add" — block submission, do not create or update anything
+      this.errorMessage = 'This airport code already exists.';
       return;
     }
 
