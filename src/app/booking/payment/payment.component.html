@@ -1,74 +1,300 @@
 <div class="pay-wrapper">
 
-  <div *ngIf="loadingBooking" class="alert alert-info">Loading booking...</div>
-  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
+  <!-- ========================= -->
+  <!-- LOADING -->
+  <!-- ========================= -->
 
-  <!-- TICKET (success state) -->
-  <div class="ticket" *ngIf="ticket">
+  <div
+    *ngIf="loadingBooking"
+    class="alert alert-info">
+
+    Loading booking...
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- CONFIRMED TICKET -->
+  <!-- ========================= -->
+
+  <div
+    class="ticket"
+    *ngIf="ticket"
+  >
+
     <h2>🎉 Booking Confirmed!</h2>
+
     <div class="ticket-card">
-      <p class="ticket-title">FLIGHT TICKET</p>
-      <p><strong>Booking ID:</strong> {{ ticket.bookingId }}</p>
-      <p *ngIf="ticket.bookingDate"><strong>Booked on:</strong> {{ ticket.bookingDate }}</p>
+
+      <p class="ticket-title">
+        FLIGHT TICKET
+      </p>
+
+      <p>
+        <strong>Booking ID:</strong>
+        {{ ticket.bookingId }}
+      </p>
+
+      <p *ngIf="ticket.bookingDate">
+        <strong>Booked on:</strong>
+        {{ ticket.bookingDate }}
+      </p>
 
       <hr />
-      <p class="passengers-label">Passengers</p>
-      <div class="passenger-row" *ngFor="let p of ticket.passengers; let i = index">
-        {{ i + 1 }}. {{ p.passengerName }} — Seat {{ p.seatNumber || p.seatId }}
+
+      <p class="passengers-label">
+        Passengers
+      </p>
+
+      <div
+        class="passenger-row"
+        *ngFor="
+          let p of ticket.passengers;
+          let i = index
+        "
+      >
+
+        {{ i + 1 }}.
+        {{ p.passengerName }}
+        —
+        Seat {{ p.seatNumber || p.seatId }}
+
       </div>
 
       <hr />
-      <p *ngIf="ticket.paymentAmount"><strong>Total Amount:</strong> ₹{{ ticket.paymentAmount }}</p>
-      <p class="status-badge status-confirmed">BOOKING CONFIRMED</p>
+
+      <p *ngIf="ticket.paymentAmount">
+        <strong>Total Amount:</strong>
+        ₹{{ ticket.paymentAmount }}
+      </p>
+
+      <p class="status-badge status-confirmed">
+        BOOKING CONFIRMED
+      </p>
+
     </div>
-    <button class="btn-secondary" (click)="goToMyBookings()">View My Bookings</button>
+
+    <button
+      class="btn-secondary"
+      (click)="goToMyBookings()"
+    >
+      View My Bookings
+    </button>
+
   </div>
 
+
+  <!-- ========================= -->
   <!-- PAYMENT FAILED -->
-  <div class="ticket" *ngIf="paymentFailed">
+  <!-- ========================= -->
+
+  <div
+    class="ticket"
+    *ngIf="paymentFailed && !ticket"
+  >
+
     <h2>❌ Payment Failed</h2>
-    <p>{{ errorMessage }}</p>
-    <button class="btn-primary" (click)="searchFlightsAgain()">Search Flights Again</button>
+
+    <p>
+      Your payment was unsuccessful.
+    </p>
+
+    <p>
+      Your selected seats have been released.
+      Please start a new booking.
+    </p>
+
+    <button
+      class="btn-primary"
+      (click)="searchFlightsAgain()"
+    >
+      Search Flights Again
+    </button>
+
+    <button
+      class="btn-secondary"
+      (click)="goToMyBookings()"
+    >
+      View My Bookings
+    </button>
+
   </div>
 
+
+  <!-- ========================= -->
+  <!-- GENERAL ERROR -->
+  <!-- ========================= -->
+
+  <div
+    *ngIf="
+      errorMessage &&
+      !paymentFailed &&
+      !ticket
+    "
+    class="alert alert-error"
+  >
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- ========================= -->
   <!-- PAYMENT FORM -->
-  <form *ngIf="!ticket && !paymentFailed && !loadingBooking && booking" [formGroup]="form" (ngSubmit)="payNow()" class="pay-form">
+  <!-- ========================= -->
+
+  <form
+    *ngIf="
+      !ticket &&
+      !paymentFailed &&
+      !loadingBooking &&
+      booking &&
+      booking.status === 'PENDING'
+    "
+
+    [formGroup]="form"
+
+    (ngSubmit)="payNow()"
+
+    class="pay-form"
+  >
+
     <h2>Payment</h2>
-    <p class="summary" *ngIf="booking.paymentAmount">Amount to pay: <strong>₹{{ booking.paymentAmount }}</strong></p>
+
+    <p
+      class="summary"
+      *ngIf="booking.paymentAmount"
+    >
+      Amount to pay:
+      <strong>
+        ₹{{ booking.paymentAmount }}
+      </strong>
+    </p>
+
+
+    <!-- Test cards -->
 
     <div class="test-cards">
+
       <p>Test cards:</p>
-      <code>4111 1111 1111 1111</code> → Success<br />
-      <code>4000 0000 0000 0002</code> → Failure
+
+      <code>
+        4111 1111 1111 1111
+      </code>
+      → Success
+
+      <br />
+
+      <code>
+        4000 0000 0000 0002
+      </code>
+      → Failure
+
     </div>
+
+
+    <!-- Card number -->
 
     <div class="field">
-      <label>Card Number</label>
-      <input type="text" formControlName="cardNumber" maxlength="16" placeholder="16-digit card number" />
-      <small class="error" *ngIf="form.get('cardNumber')?.touched && form.get('cardNumber')?.invalid">
+
+      <label>
+        Card Number
+      </label>
+
+      <input
+        type="text"
+        formControlName="cardNumber"
+        maxlength="16"
+        placeholder="16-digit card number"
+      />
+
+      <small
+        class="error"
+        *ngIf="
+          form.get('cardNumber')?.touched &&
+          form.get('cardNumber')?.invalid
+        "
+      >
         Enter a valid 16-digit card number.
       </small>
+
     </div>
+
+
+    <!-- Expiry + CVV -->
 
     <div class="field-row">
+
       <div class="field">
-        <label>Expiry (MM/YY)</label>
-        <input type="text" formControlName="expiry" placeholder="MM/YY" maxlength="5" />
-        <small class="error" *ngIf="form.get('expiry')?.touched && form.get('expiry')?.invalid">
+
+        <label>
+          Expiry (MM/YY)
+        </label>
+
+        <input
+          type="text"
+          formControlName="expiry"
+          placeholder="MM/YY"
+          maxlength="5"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            form.get('expiry')?.touched &&
+            form.get('expiry')?.invalid
+          "
+        >
           Format must be MM/YY.
         </small>
+
       </div>
+
+
       <div class="field">
-        <label>CVV</label>
-        <input type="password" formControlName="cvv" maxlength="3" placeholder="123" />
-        <small class="error" *ngIf="form.get('cvv')?.touched && form.get('cvv')?.invalid">
+
+        <label>
+          CVV
+        </label>
+
+        <input
+          type="password"
+          formControlName="cvv"
+          maxlength="3"
+          placeholder="123"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            form.get('cvv')?.touched &&
+            form.get('cvv')?.invalid
+          "
+        >
           3-digit CVV.
         </small>
+
       </div>
+
     </div>
 
-    <button type="submit" class="btn-primary" [disabled]="processing">
-      {{ processing ? 'Processing payment...' : 'Pay Now' }}
+
+    <!-- Pay -->
+
+    <button
+      type="submit"
+      class="btn-primary"
+      [disabled]="processing"
+    >
+
+      {{
+        processing
+          ? 'Processing payment...'
+          : 'Pay Now'
+      }}
+
     </button>
+
   </form>
+
 </div>

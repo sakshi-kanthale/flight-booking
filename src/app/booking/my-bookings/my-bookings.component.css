@@ -1,41 +1,321 @@
-.mb-wrapper { max-width: 640px; margin: 32px auto; padding: 24px; font-family: 'Segoe UI', system-ui, sans-serif; }
-h2 { color: #1a2b4c; margin-bottom: 20px; }
+.mb-wrapper {
+  max-width: 640px;
+  margin: 30px auto;
+  padding: 0 20px 40px;
+}
 
-.alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
-.alert-error { background: #fdecea; color: #b3261e; border: 1px solid #f3c1bd; }
-.alert-info { background: #e8f0fe; color: #1a4b8c; border: 1px solid #b6d0f5; }
+.mb-wrapper h2 {
+  margin-bottom: 20px;
+  color: #12345b;
+}
+
+
+/* =========================
+   ALERTS
+   ========================= */
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background: #fff0f0;
+  color: #c62828;
+  border: 1px solid #f3c2c2;
+}
+
+.alert-info {
+  background: #eef6ff;
+  color: #245a91;
+  border: 1px solid #c9e0f7;
+}
+
+
+/* =========================
+   TOAST
+   ========================= */
 
 .toast {
-  background: #1a7a3d; color: #fff; padding: 10px 16px; border-radius: 8px;
-  margin-bottom: 16px; font-size: 14px; animation: fadeIn 0.2s ease-in;
+  background: #e8f7ee;
+  color: #16753a;
+  border: 1px solid #bce3ca;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.empty-state { text-align: center; color: #888; padding: 40px 0; font-size: 15px; }
+
+/* =========================
+   EMPTY STATE
+   ========================= */
+
+.empty-state {
+  text-align: center;
+  padding: 35px 20px;
+  color: #666;
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+}
+
+
+/* =========================
+   BOOKING CARD
+   ========================= */
 
 .booking-card {
-  background: #fff; border: 1px solid #e3e6ec; border-radius: 12px;
-  padding: 18px 20px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  background: #ffffff;
+  border: 1px solid #dfe4ea;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.booking-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.booking-id { font-weight: 700; color: #2b3a55; }
 
-.status-badge { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-.status-confirmed { background: #e3f7e8; color: #1a7a3d; }
-.status-pending { background: #fff4e0; color: #a06400; }
-.status-cancelled { background: #fdecea; color: #b3261e; }
+/* =========================
+   BOOKING HEADER
+   ========================= */
 
-.passenger-row { font-size: 14px; color: #444; padding: 2px 0; }
+.booking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.booking-id {
+  font-weight: 600;
+  font-size: 16px;
+  color: #12345b;
+}
+
+
+/* =========================
+   STATUS BADGES
+   ========================= */
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+
+/* Confirmed */
+
+.status-confirmed {
+  background: #e6f7ec;
+  color: #16803c;
+}
+
+
+/* Pending */
+
+.status-pending {
+  background: #fff4dc;
+  color: #a76500;
+}
+
+
+/* Payment failed */
+
+.status-payment-failed {
+  background: #fff0f0;
+  color: #d32f2f;
+}
+
+
+/* Cancelled */
+
+.status-cancelled {
+  background: #fdebea;
+  color: #d32f2f;
+}
+
+
+/* =========================
+   BOOKING DETAILS
+   ========================= */
+
+.booking-card p {
+  margin: 9px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.passenger-row {
+  color: #555;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+
+/* =========================
+   BOOKING STATE MESSAGE
+   ========================= */
+
+.booking-message {
+  margin-top: 15px;
+  padding: 12px 0 0;
+}
+
+.booking-message p {
+  margin-bottom: 12px;
+}
+
+
+/* =========================
+   PRIMARY BUTTON
+   ========================= */
+
+.btn-primary {
+  border: none;
+  border-radius: 7px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #12345b;
+  color: white;
+  transition: opacity 0.2s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.88;
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   CANCEL BUTTON
+   ========================= */
 
 .btn-cancel {
-  margin-top: 12px; padding: 9px 16px; background: #fff; color: #c0392b;
-  border: 1.5px solid #c0392b; border-radius: 8px; font-weight: 600; cursor: pointer;
+  margin-top: 14px;
+  padding: 9px 17px;
+  border: 1px solid #e53935;
+  border-radius: 7px;
+  background: white;
+  color: #d93025;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
-.btn-cancel:hover:not(:disabled) { background: #fdecea; }
-.btn-cancel:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.confirm-box { margin-top: 12px; background: #fff7f6; border: 1px solid #f3c1bd; border-radius: 8px; padding: 12px; }
-.confirm-actions { display: flex; gap: 10px; margin-top: 8px; }
-.btn-secondary { padding: 8px 14px; background: #fff; border: 1.5px solid #ccc; border-radius: 8px; cursor: pointer; }
-.btn-danger { padding: 8px 14px; background: #c0392b; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+.btn-cancel:hover {
+  background: #fff4f3;
+}
+
+.btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   SECONDARY BUTTON
+   ========================= */
+
+.btn-secondary {
+  padding: 9px 16px;
+  border: 1px solid #c8cdd3;
+  border-radius: 7px;
+  background: white;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #f5f5f5;
+}
+
+
+/* =========================
+   DANGER BUTTON
+   ========================= */
+
+.btn-danger {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 7px;
+  background: #d93025;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+
+/* =========================
+   CONFIRMATION BOX
+   ========================= */
+
+.confirm-box {
+  margin-top: 16px;
+  padding: 15px;
+  border-radius: 8px;
+  background: #fff8f7;
+  border: 1px solid #f0c9c5;
+}
+
+.confirm-box p {
+  margin-top: 0;
+  color: #444;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 600px) {
+
+  .mb-wrapper {
+    margin: 20px auto;
+    padding: 0 14px 30px;
+  }
+
+  .booking-card {
+    padding: 16px;
+  }
+
+  .booking-header {
+    align-items: flex-start;
+  }
+
+  .status-badge {
+    font-size: 11px;
+  }
+
+  .confirm-actions {
+    flex-direction: column;
+  }
+
+  .confirm-actions button {
+    width: 100%;
+  }
+}

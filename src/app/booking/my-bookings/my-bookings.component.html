@@ -1,46 +1,251 @@
 <div class="mb-wrapper">
+
   <h2>My Bookings</h2>
 
-  <div *ngIf="toast" class="toast">{{ toast }}</div>
-  <div *ngIf="errorMessage" class="alert alert-error">{{ errorMessage }}</div>
-  <div *ngIf="loading" class="alert alert-info">Loading your bookings...</div>
-  <div *ngIf="!loading && bookings.length === 0 && !errorMessage" class="empty-state">
+  <!-- Toast -->
+  <div
+    *ngIf="toast"
+    class="toast">
+    {{ toast }}
+  </div>
+
+  <!-- Error -->
+  <div
+    *ngIf="errorMessage"
+    class="alert alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div
+    *ngIf="loading"
+    class="alert alert-info">
+    Loading your bookings...
+  </div>
+
+  <!-- Empty state -->
+  <div
+    *ngIf="!loading && bookings.length === 0 && !errorMessage"
+    class="empty-state">
     No bookings yet. Go book a flight! ✈️
   </div>
 
-  <div class="booking-card" *ngFor="let b of bookings">
+
+  <!-- ========================= -->
+  <!-- BOOKINGS -->
+  <!-- ========================= -->
+
+  <div
+    class="booking-card"
+    *ngFor="let b of bookings">
+
+
+    <!-- ========================= -->
+    <!-- BOOKING HEADER -->
+    <!-- ========================= -->
+
     <div class="booking-header">
-      <span class="booking-id">Booking #{{ b.bookingId }}</span>
-      <span class="status-badge"
-            [class.status-confirmed]="b.status === 'CONFIRMED'"
-            [class.status-pending]="b.status === 'PENDING'"
-            [class.status-cancelled]="b.status === 'CANCELLED'">
-        {{ b.status }}
+
+      <span class="booking-id">
+        Booking #{{ b.bookingId }}
       </span>
+
+      <span
+        class="status-badge"
+
+        [class.status-confirmed]="
+          b.status === 'CONFIRMED'
+        "
+
+        [class.status-pending]="
+          b.status === 'PENDING'
+        "
+
+        [class.status-payment-failed]="
+          b.status === 'PAYMENT_FAILED'
+        "
+
+        [class.status-cancelled]="
+          b.status === 'CANCELLED'
+        "
+      >
+
+        <ng-container [ngSwitch]="b.status">
+
+          <span *ngSwitchCase="'CONFIRMED'">
+            CONFIRMED
+          </span>
+
+          <span *ngSwitchCase="'PENDING'">
+            PENDING
+          </span>
+
+          <span *ngSwitchCase="'PAYMENT_FAILED'">
+            PAYMENT FAILED
+          </span>
+
+          <span *ngSwitchCase="'CANCELLED'">
+            CANCELLED
+          </span>
+
+        </ng-container>
+
+      </span>
+
     </div>
 
-    <p *ngIf="b.bookingDate">Booked on: {{ b.bookingDate }}</p>
 
-    <div class="passenger-row" *ngFor="let p of b.passengers">
-      {{ p.passengerName }} — Seat {{ p.seatNumber || p.seatId }}
+    <!-- ========================= -->
+    <!-- BOOKING DATE -->
+    <!-- ========================= -->
+
+    <p *ngIf="b.bookingDate">
+      Booked on: {{ b.bookingDate }}
+    </p>
+
+
+    <!-- ========================= -->
+    <!-- PASSENGERS -->
+    <!-- ========================= -->
+
+    <div
+      class="passenger-row"
+      *ngFor="let p of b.passengers">
+
+      {{ p.passengerName }}
+      —
+      Seat {{ p.seatNumber || p.seatId }}
+
     </div>
 
-    <p *ngIf="b.paymentAmount"><strong>Total:</strong> ₹{{ b.paymentAmount }}</p>
 
-    <button class="btn-cancel"
-            *ngIf="canCancel(b)"
-            [disabled]="cancellingId === b.bookingId"
-            (click)="askCancel(b.bookingId)">
-      {{ cancellingId === b.bookingId ? 'Cancelling...' : 'Cancel Booking' }}
+    <!-- ========================= -->
+    <!-- TOTAL AMOUNT -->
+    <!-- ========================= -->
+
+    <p *ngIf="b.paymentAmount">
+      <strong>Total:</strong>
+      ₹{{ b.paymentAmount }}
+    </p>
+
+
+    <!-- ========================= -->
+    <!-- PENDING -->
+    <!-- ========================= -->
+
+    <div
+      *ngIf="b.status === 'PENDING'"
+      class="booking-message">
+
+      <p>
+        Payment is pending for this booking.
+      </p>
+
+      <button
+        class="btn-primary"
+        (click)="payForBooking(b.bookingId)"
+      >
+        Pay Now
+      </button>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- PAYMENT FAILED -->
+    <!-- ========================= -->
+
+    <div
+      *ngIf="b.status === 'PAYMENT_FAILED'"
+      class="booking-message">
+
+      <p>
+        Payment failed. Your selected seats have been released.
+      </p>
+
+      <button
+        class="btn-primary"
+        (click)="searchFlightsAgain()"
+      >
+        Book Again
+      </button>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- CONFIRMED -->
+    <!-- ========================= -->
+
+    <button
+      class="btn-cancel"
+
+      *ngIf="canCancel(b)"
+
+      [disabled]="
+        cancellingId === b.bookingId
+      "
+
+      (click)="askCancel(b.bookingId)"
+    >
+
+      {{
+        cancellingId === b.bookingId
+          ? 'Cancelling...'
+          : 'Cancel Booking'
+      }}
+
     </button>
 
-    <!-- inline confirm dialog -->
-    <div class="confirm-box" *ngIf="confirmingId === b.bookingId">
-      <p>Are you sure you want to cancel this booking? This can't be undone.</p>
+
+    <!-- ========================= -->
+    <!-- CANCELLED -->
+    <!-- ========================= -->
+
+    <p
+      *ngIf="b.status === 'CANCELLED'"
+      class="booking-message">
+
+      This booking has been cancelled.
+
+    </p>
+
+
+    <!-- ========================= -->
+    <!-- CONFIRM CANCEL DIALOG -->
+    <!-- ========================= -->
+
+    <div
+      class="confirm-box"
+      *ngIf="confirmingId === b.bookingId"
+    >
+
+      <p>
+        Are you sure you want to cancel this booking?
+        This can't be undone.
+      </p>
+
       <div class="confirm-actions">
-        <button class="btn-secondary" (click)="dismissConfirm()">No, keep it</button>
-        <button class="btn-danger" (click)="confirmCancel(b)">Yes, cancel</button>
+
+        <button
+          class="btn-secondary"
+          (click)="dismissConfirm()"
+        >
+          No, keep it
+        </button>
+
+        <button
+          class="btn-danger"
+          (click)="confirmCancel(b)"
+        >
+          Yes, cancel
+        </button>
+
       </div>
+
     </div>
+
+
   </div>
+
 </div>

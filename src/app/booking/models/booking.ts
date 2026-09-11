@@ -1,5 +1,10 @@
 export type Gender = 'MALE' | 'FEMALE' | 'OTHER';
-export type BookingStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED';
+
+export type BookingStatus =
+  | 'PENDING'
+  | 'CONFIRMED'
+  | 'PAYMENT_FAILED'
+  | 'CANCELLED';
 
 export interface PassengerInput {
   seatId: number;
